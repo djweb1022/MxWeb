@@ -14,6 +14,12 @@ class BaseSetting(object):
     use_bootswatch = True
 
 
+class GlobalSettings(object):
+    site_title = '后台管理系统'
+    site_footer = '网站管理'
+    menu_style = 'accordion'    # 标签折叠
+
+
 class EmailVerifyRecordAdmin(object):
     # pass
     list_display = ['code', 'email', 'send_type', 'send_time']
@@ -31,4 +37,5 @@ class BannerAdmin(object):
 xadmin.site.register(EmailVerifyRecord, EmailVerifyRecordAdmin)
 xadmin.site.register(Banner, BannerAdmin)
 xadmin.site.register(views.BaseAdminView, BaseSetting)
+xadmin.site.register(views.CommAdminView, GlobalSettings)
 # xadmin.site.register(xadmin.views.BaseAdminView, BaseSetting)
