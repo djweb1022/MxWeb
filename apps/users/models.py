@@ -33,9 +33,13 @@ class EmailVerifyRecord(models.Model):
         verbose_name = u'邮箱验证码'
         verbose_name_plural = verbose_name
 
+    def __unicode__(self):
+        # return '{0}({1}){2}'.format(self.code, self.email, self.send_time)
+        return '{0}({1})'.format(self.code, self.email)
+
 
 class Banner(models.Model):
-    time = models.CharField(max_length=100, verbose_name=u'标题')
+    title = models.CharField(max_length=100, verbose_name=u'标题')
     image = models.ImageField(upload_to='banner/%Y/%m', verbose_name=u'轮播图', max_length=100)
     url = models.URLField(max_length=200, verbose_name=u'访问地址')
     index = models.IntegerField(default=100, verbose_name=u'顺序')
