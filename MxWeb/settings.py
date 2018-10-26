@@ -32,6 +32,9 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -138,8 +141,7 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
 # STATICFILES_DIRS = (
-#     os.path.join(BASE_DIR, 'static')
+#     os.path.join(BASE_DIR, 'static'),
 # )
-# 一定要用[],纪念我逝去的10分钟
 
 
