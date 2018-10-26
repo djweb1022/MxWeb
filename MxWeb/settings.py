@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """
 Django settings for MxWeb project.
 
@@ -133,4 +134,12 @@ USE_TZ = False
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+]
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR, 'static')
+# )
+# 一定要用[],纪念我逝去的10分钟
+
 
