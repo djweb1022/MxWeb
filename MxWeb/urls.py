@@ -1,3 +1,4 @@
+# -*- coding:utf-8 -*-
 """MxWeb URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
@@ -18,11 +19,13 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 import xadmin
 
-from users.views import user_login
+# from users.views import user_login  #基于函数方法的书写
+from users.views import LoginView  # 基于类的书写
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
     url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
     # url(r'^login/$', TemplateView.as_view(template_name='login.html'), name='login'),
-    url(r'^login/$', user_login, name='login'),
+    # url(r'^login/$', user_login, name='login'),
+    url(r'^login/$', LoginView.as_view(), name='login'),
 ]
