@@ -55,3 +55,4 @@ class LoginView(View):
 #     elif request.method == 'GET':
 #         return render(request, 'login.html', {})
 # 用函数的方式书写Login逻辑，替换为基于类来实现 6-4
+# 6-6 finish
