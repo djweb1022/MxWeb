@@ -33,5 +33,5 @@ def random_str(randomlength=8):
     length = len(chars)-1
     random = Random()
     for i in range(randomlength):
-        str+=chars[random.randint(0,length)]
+        str += chars[random.randint(0, length)]
     return str
