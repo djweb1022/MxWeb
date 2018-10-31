@@ -20,7 +20,7 @@ from django.views.generic import TemplateView
 import xadmin
 
 # from users.views import user_login  #基于函数方法的书写
-from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView  # 基于类的书写
+from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView  # 基于类的书写
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
@@ -32,4 +32,5 @@ urlpatterns = [
     url(r'^captcha/', include('captcha.urls')),
     url(r'^active/(?P<active_code>.*)/$', ActiveUserView.as_view(), name='user_active'),
     url(r'^forget/$', ForgetPwdView.as_view(), name='forget_pwd'),
+    url(r'^reset/(?P<active_code>.*)/$', ResetView.as_view(), name='reset_pwd'),
 ]

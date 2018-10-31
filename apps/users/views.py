@@ -99,6 +99,18 @@ class ForgetPwdView(View):
             return render(request, 'forgetpwd.html', {'forget_form': forget_form})
 
 
+class ResetView(View):
+    def get(self, request, active_code):
+        all_records = EmailVerifyRecord.objects.filter(code=active_code)
+        if all_records:
+            for record in all_records:
+                email = record.email
+                return render(request, 'password_reset.html', {'email': email})
+        else:
+            return render(request, 'active_fail.html')
+        return render(request, 'login.html')
+
+
 # def user_login(request):
 #     if request.method == 'POST':
 #         user_name = request.POST.get('username', '')
