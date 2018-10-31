@@ -102,10 +102,13 @@ class ForgetPwdView(View):
 class ResetView(View):
     def get(self, request, active_code):
         all_records = EmailVerifyRecord.objects.filter(code=active_code)
+        user_click = EmailVerifyRecord.objects.get(code=active_code)
+        if user_click.is_click is True:
+            return render(request, 'clicked.html')
         if all_records:
             for record in all_records:
                 email = record.email
-                return render(request, 'password_reset.html', {'email': email})
+                return render(request, 'password_reset.html', {'email': email, 'active_code': active_code})
         else:
             return render(request, 'active_fail.html')
         return render(request, 'login.html')
@@ -113,6 +116,8 @@ class ResetView(View):
 
 class ModifyPwdView(View):
     def post(self, request):
+        active_code = request.POST.get('active_code', '')
+        user_click = EmailVerifyRecord.objects.get(code=active_code)
         modify_form = ModifyPwdForm(request.POST)
         if modify_form.is_valid():
             pwd1 = request.POST.get('password1', '')
@@ -123,6 +128,8 @@ class ModifyPwdView(View):
             user = UserProfile.objects.get(email=email)
             user.password = make_password(pwd2)
             user.save()
+            user_click.is_click = True
+            user_click.save()
             return render(request, 'login.html')
         else:
             email = request.POST.get('email', '')

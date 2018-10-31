@@ -28,6 +28,7 @@ class EmailVerifyRecord(models.Model):
     email = models.EmailField(max_length=50, verbose_name=u'邮箱')
     send_type = models.CharField(verbose_name=u'验证码类型', choices=(('register', u'注册'), ('forget', u'找回密码')), max_length=10)
     send_time = models.DateTimeField(verbose_name=u'发送时间', default=datetime.now)
+    is_click = models.BooleanField(default=False, verbose_name=u'是否修改')
 
     class Meta:
         verbose_name = u'邮箱验证码'
