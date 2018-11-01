@@ -151,3 +151,6 @@ EMAIL_HOST_USER = 'forhappyday@126.com'
 EMAIL_HOST_PASSWORD = 'QqWw123'
 EMAIL_USE_TLS = False
 EMAIL_FROM = 'forhappyday@126.com'
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
