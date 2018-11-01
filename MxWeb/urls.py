@@ -17,11 +17,13 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 from django.views.generic import TemplateView
+from django.views.static import serve
 import xadmin
 
 # from users.views import user_login  #基于函数方法的书写
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView  # 基于类的书写
 from organization.views import OrgView
+from MxWeb.settings import MEDIA_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
@@ -38,4 +40,6 @@ urlpatterns = [
 
     # 课程机构首页
     url(r'^org_list/$', OrgView.as_view(), name='org_list'),
+    # 配置上传文件的访问处理函数
+    url(r'^media/(?P<path>.*)/$', serve, {'document_root': MEDIA_ROOT})
 ]

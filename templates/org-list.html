@@ -37,14 +37,14 @@
 					<div class="cont">
                         <a href="?ct="><span class="active2">全部</span></a>
                                 {% for city in all_citys %}
-                                    <a href="?city=1&ct="><span class="">{{ city.name }}</span></a>
+                                    <a href="?city=1&ct="><span class="">{{ city.name }}</span></a>  <!-- 显示所在地区 -->
                                 {% endfor %}
                                 <!-- <a href="?city=1&ct="><span class="">北京市</span></a> -->
 					</div>
 				</li>
 			</ul>
 		</div>
-		<div class="all">共<span class="key">15</span>家</div>
+		<div class="all">共<span class="key">{{ org_nums }}</span>家</div>
 		<div class="butler_list company list">
 		<div class="layout">
 			<div class="head">
@@ -54,11 +54,11 @@
 					<li class=""><a href="?sort=courses&ct=&city=">课程数 &#8595;</a></li>
 				</ul>
 			</div>
-
-                <dl class="des difdes">
+                {% for course_org in all_orgs %}
+                    <dl class="des difdes">
                     <dt>
                         <a href="org-detail-homepage.html">
-                            <img width="200" height="120" class="scrollLoading" data-url="{% static 'media/org/2016/11/imooc.png' %}"/>
+                            <img width="200" height="120" class="scrollLoading" data-url="{{ MEDIA_URL }}{{ course_org.image }}"/>
                         </a>
                     </dt>
                     <dd>
@@ -88,6 +88,8 @@
                     </dd>
                     <div class="buy start_groupbuy jsShowPerfect2" data-id="22"><br/>联系<br/>服务</div>
                 </dl>
+                {% endfor %}
+
 
                 <dl class="des difdes">
                     <dt>
