@@ -17,6 +17,12 @@ class OrgView(View):
         # 城市
         all_citys = CityDict.objects.all()
 
+
+        # 取出筛选城市
+        city_id = request.GET.get('city', '')
+        if city_id:
+            all_orgs = all_orgs.filter(city_id=int(city_id))
+
         # 对课程机构进行分页
         try:
             page = request.GET.get('page', 1)
@@ -29,4 +35,5 @@ class OrgView(View):
             'all_orgs': orgs,
             'all_citys': all_citys,
             'org_nums': org_nums,
+            'city_id': city_id,
         })

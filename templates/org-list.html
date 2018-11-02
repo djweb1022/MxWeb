@@ -35,9 +35,9 @@
 					<h2>所在地区</h2>
 					<div class="more">更多</div>
 					<div class="cont">
-                        <a href="?ct="><span class="active2">全部</span></a>
+                        <a href="?ct="><span class="{% ifequal city_id '' %}active2{% endifequal %}">全部</span></a>
                                 {% for city in all_citys %}
-                                    <a href="?city=1&ct="><span class="">{{ city.name }}</span></a>  <!-- 显示所在地区 -->
+                                    <a href="?city={{ city.id }}"><span class="{% ifequal city_id city.id|stringformat:'i' %}active2{% endifequal %}">{{ city.name }}</span></a>  <!-- 显示所在地区 -->
                                 {% endfor %}
                                 <!-- <a href="?city=1&ct="><span class="">北京市</span></a> -->
 					</div>
