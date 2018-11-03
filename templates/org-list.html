@@ -131,7 +131,6 @@
                 </div>
                 <p class="error company-tips" id="jsCompanyTips"></p>
 				<input class="btn" type="text" id="jsStayBtn" value="立即咨询 >" />
-            <!-- <input type='hidden' name='csrfmiddlewaretoken' value='5I2SlleZJOMUX9QbwYLUIAOshdrdpRcy' /> -->
                 {% csrf_token %}
             </form>
 		</div>
@@ -156,7 +155,7 @@
 {% block custom_js %}
     <script>
     $(function(){
-        $('#jsStayBtn').on('click', function(){
+        $('#jsStayBtn').off().on('click', function(){
             $.ajax({
                 cache: false,
                 type: "POST",
@@ -164,8 +163,6 @@
                 data:$('#jsStayForm').serialize(),
                 async: true,
                 success: function(data) {
-                    console.log(data)
-                    alert(data)
                     if(data.status == 'success'){
                         $('#jsStayForm')[0].reset();
                         alert("提交成功")
