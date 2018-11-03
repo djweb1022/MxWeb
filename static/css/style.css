@@ -5098,6 +5098,7 @@ footer .footer .line {
     margin-left: -3px;
     margin-top: 5px;
     background: url(../images/share_c8.png) no-repeat left 3px;
+    /*background: url(../images/delete.png) no-repeat left 3px;*/
 }
 
 .companyheader .head, .companyheader .shead {
