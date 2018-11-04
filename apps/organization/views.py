@@ -75,13 +75,30 @@ class AddUserAskView(View):
 class OrgHomeView(View):
     """机构首页"""
     def get(self, request, org_id):
+        current_page = 'home'
         course_org = CourseOrg.objects.get(id=int(org_id))
-        all_courses = course_org.course_set.all()[:3]  # 外键反取
+        all_courses = course_org.course_set.all()[:3]  # 从外键反取类
         all_teachers = course_org.teacher_set.all()[:1]
         return render(request, 'org-detail-homepage.html', {
             'all_courses': all_courses,
             'all_teachers': all_teachers,
-            'course_org': course_org
+            'course_org': course_org,
+            'current_page': current_page,
+        })
+
+
+class OrgCourseView(View):
+    """机构课程列表页"""
+    def get(self, request, org_id):
+        current_page = 'course'
+        course_org = CourseOrg.objects.get(id=int(org_id))
+        all_courses = course_org.course_set.all()  # 从外键反取类
+        # all_teachers = course_org.teacher_set.all()[:1]
+        return render(request, 'org-detail-course.html', {
+            'all_courses': all_courses,
+            # 'all_teachers': all_teachers,
+            'course_org': course_org,
+            'current_page': current_page,
         })
 
 
