@@ -221,7 +221,7 @@ function add_fav(current_elem, fav_id, fav_type){
 }
 
 $('.collectionbtn').on('click', function(){
-    add_fav($(this), 1, 2);
+    add_fav($(this), {{ course_org.id }}, 2);
 });
 
 $(function(){
