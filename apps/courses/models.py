@@ -19,12 +19,22 @@ class Course(models.Model):
     fav_nums = models.IntegerField(default=0, verbose_name=u'收藏人数')
     image = models.ImageField(upload_to='courses/%Y/%m', verbose_name=u'封面图', max_length=100)
     click_nums = models.IntegerField(default=0, verbose_name=u'点击数')
+    category = models.CharField(default=u'后端开发', max_length=20, verbose_name=u'课程类别')
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
     # add_time = models.DateTimeField(default=datetime.now().strftime('%Y-%m-%d %H:%M:%S'), verbose_name=u'添加时间')
 
     class Meta:
         verbose_name = u'课程'
         verbose_name_plural = verbose_name
+
+    def get_zj_nums(self):
+        # 获取课程章节数
+        return self.lesson_set.all().count()
+        # 外键反向查找
+
+    def get_learn_users(self):
+        return self.usercourse_set.all()[:5]
+        # 外键反向查找
 
     def __unicode__(self):
         return self.name
