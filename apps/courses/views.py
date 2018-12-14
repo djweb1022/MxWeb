@@ -44,6 +44,12 @@ class CourseDetailView(View):
         # 增加课程点击数
         course.click_nums += 1
         course.save()
+        tag = course.tag
+        if tag:
+            relate_courses = Course.objects.filter(tag=tag)[:1]
+        else:
+            relate_courses = []
         return render(request, 'course-detail.html', {
             'course': course,
+            'relate_courses': relate_courses,
         })
