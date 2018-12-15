@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 from datetime import datetime
 
 from django.db import models
-from organization.models import CourseOrg
+from organization.models import CourseOrg, Teacher
 
 # Create your models here.
 
@@ -13,6 +13,7 @@ class Course(models.Model):
     name = models.CharField(max_length=50, verbose_name=u'课程名')
     desc = models.CharField(max_length=300, verbose_name=u'课程描述')
     detail = models.TextField(verbose_name=u'课程详情')
+    teacher = models.ForeignKey(Teacher, verbose_name=u'讲师', null=True, blank=True)
     degree = models.CharField(verbose_name=u'难度', choices=(('cj', u'初级'), ('zj', u'中级'), ('gj', u'高级')), max_length=2)
     learn_times = models.IntegerField(default=0, verbose_name=u'学习时长(分钟数)')
     students = models.IntegerField(default=0, verbose_name=u'学习人数')
@@ -57,10 +58,15 @@ class Lesson(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_lesson_video(self):
+        # 获取章节视频
+        return self.video_set.all()
+
 
 class Video(models.Model):
     lesson = models.ForeignKey(Lesson, verbose_name=u'章节')
     name = models.CharField(max_length=100, verbose_name=u'视频名')
+    learn_times = models.IntegerField(default=0, verbose_name=u'学习时长(分钟数)')
     url = models.CharField(max_length=200, default='', verbose_name=u'访问地址')
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
 
