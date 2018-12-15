@@ -46,7 +46,7 @@
 						</ul>
 						<div class="btns">
 							<div class="btn colectgroupbtn"  id="jsLeftBtn">
-                                  收藏
+                                  {% if has_fav_course %}已收藏{% else %}收藏{% endif %}
                             </div>
                                 <div class="buy btn"><a style="color: white" href="course-video.html">开始学习</a></div>
 						</div>
@@ -82,7 +82,7 @@
                     </a>
 					<div class="btn  notlogin
 					     "data-favid="14" id="jsRightBtn">
-                         已收藏
+                         {% if has_fav_org %}已收藏{% else %}收藏{% endif %}
                     </div>
 					<div class="clear">
 						<ul>
@@ -140,11 +140,6 @@
                             </dd>
                         </dl>
                     {% endfor %}
-
-
-
-
-
                 </div>
 			</div>
 		</div>
@@ -179,11 +174,11 @@
         });
     }
 
-    $('.jsLeftBtn').on('click', function(){
+    $('#jsLeftBtn').on('click', function(){
         add_fav($(this), {{ course.id }}, 1);
     });
 
-    $('.jsRightBtn').on('click', function(){
+    $('#jsRightBtn').on('click', function(){
         add_fav($(this), {{ course.course_org.id }}, 2);
     });
     </script>
