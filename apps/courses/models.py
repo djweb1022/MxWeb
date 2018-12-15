@@ -23,6 +23,8 @@ class Course(models.Model):
     category = models.CharField(default=u'后端开发', max_length=20, verbose_name=u'课程类别')
     tag = models.CharField(default="", verbose_name=u'课程标签', max_length=10)
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
+    youneed_know = models.CharField(default="", max_length=300, verbose_name=u'课程须知')
+    teacher_tell = models.CharField(default="", max_length=300, verbose_name=u'老师告诉你')
     # add_time = models.DateTimeField(default=datetime.now().strftime('%Y-%m-%d %H:%M:%S'), verbose_name=u'添加时间')
 
     class Meta:
