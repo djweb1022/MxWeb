@@ -156,7 +156,8 @@ i {
     vertical-align: middle;
 }
 .course-infos .statics .static-time {
-    font-size: 12px;
+    font-size: 18px;
+    font-weight: bold;
 }
 .course-infos .extra {
     position: absolute;
@@ -341,7 +342,7 @@ i {
     vertical-align: -2px;
 }
 .course-info-main.has-progress .aside {
-    padding-top: 14px;
+    padding-top: 22px;
 }
 .course-info-main .content {
     float: left;
