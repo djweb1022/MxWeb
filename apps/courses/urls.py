@@ -3,7 +3,7 @@ __author__ = 'yfj'
 __date__ = '2018/11/5 10:26'
 
 from django.conf.urls import url, include
-from courses.views import CourseListView, CourseDetailView, CourseInfoView, CommentView, AddCommentView
+from courses.views import CourseListView, CourseDetailView, CourseInfoView, CommentView, AddCommentView, VideoPlayView
 
 
 urlpatterns = [
@@ -17,4 +17,6 @@ urlpatterns = [
     url(r'^comment/(?P<course_id>\d+)/$', CommentView.as_view(), name='course_comments'),
     # 添加课程评论
     url(r'^add_comment/$', AddCommentView.as_view(), name='add_comment'),
+    # 视频
+    url(r'^video/(?P<video_id>\d+)/$', VideoPlayView.as_view(), name='video_play'),
 ]
