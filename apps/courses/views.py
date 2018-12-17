@@ -5,7 +5,8 @@ from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 
 from .models import Course, CourseResource
-from operation.models import UserFavorite, CourseComments
+from operation.models import UserFavorite, CourseComments, UserCourse
+from utils.mixin_utils import LoginRequiredMixIn
 
 # Create your views here.
 
@@ -69,27 +70,58 @@ class CourseDetailView(View):
         })
 
 
-class CourseInfoView(View):
+class CourseInfoView(LoginRequiredMixIn, View):
     """课程章节信息"""
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
+
+        # 查询用户是否已经关联了该课程
+        user_relate = UserCourse.objects.filter(user=request.user, course=course)
+        # 如果没有则建立联系
+        if not user_relate:
+            user_create_relate = UserCourse(user=request.user, course=course)
+            user_create_relate.save()
+
+        # 取出学过该课程的所有UserCourse对象
+        user_courses = UserCourse.objects.filter(course=course)
+        # 取出学过该课程的所有用户id
+        user_ids = [user_course.user.id for user_course in user_courses]
+        # 取出这些用户id对应的所有UserCourse对象
+        all_user_courses = UserCourse.objects.filter(user_id__in=user_ids)
+        # 取出所有课程id
+        course_ids = [all_user_course.course.id for all_user_course in all_user_courses]
+        # 获取用户学过的其他课程
+        relate_courses = Course.objects.filter(id__in=course_ids).order_by('-click_nums')[:5]
         all_resources = CourseResource.objects.filter(course=course)
+
         return render(request, 'course-video.html', {
             'course': course,
             'course_resources': all_resources,
+            'relate_courses': relate_courses,
         })
 
 
-class CommentView(View):
+class CommentView(LoginRequiredMixIn, View):
     """课程评论"""
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
+        # 取出学过该课程的所有UserCourse对象
+        user_courses = UserCourse.objects.filter(course=course)
+        # 取出学过该课程的所有用户id
+        user_ids = [user_course.user.id for user_course in user_courses]
+        # 取出这些用户id对应的所有UserCourse对象
+        all_user_courses = UserCourse.objects.filter(user_id__in=user_ids)
+        # 取出所有课程id
+        course_ids = [all_user_course.course.id for all_user_course in all_user_courses]
+        # 获取用户学过的其他课程
+        relate_courses = Course.objects.filter(id__in=course_ids).order_by('-click_nums')[:5]
         all_resources = CourseResource.objects.filter(course=course)
         all_comments = CourseComments.objects.all()
         return render(request, 'course-comment.html', {
             'course': course,
             'course_resources': all_resources,
             'all_comments': all_comments,
+            'relate_courses': relate_courses,
         })
 
 
