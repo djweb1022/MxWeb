@@ -5,9 +5,9 @@ from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 
 from .models import CourseOrg, CityDict, Teacher
+from courses.models import Course
 from operation.models import UserFavorite
 from .forms import UserAskForm
-from  courses.models import Course
 
 # Create your views here.
 
@@ -213,4 +213,19 @@ class TeacherListView(View):
             'all_teachers': teachers,
             'sorted_teachers': sorted_teachers,
             'sort': sort,
+        })
+
+
+class TeacherDetailView(View):
+    def get(self, request, teacher_id):
+        teacher = Teacher.objects.get(id=int(teacher_id))
+        all_courses = Course.objects.filter(teacher=teacher)
+
+        # 排行榜
+        sorted_teachers = Teacher.objects.all().order_by('-click_nums')[:3]
+
+        return render(request, 'teacher-detail.html', {
+            'teacher': teacher,
+            'all_courses': all_courses,
+            'sorted_teachers': sorted_teachers,
         })
