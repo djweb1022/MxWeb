@@ -1,26 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}公开课列表页{% endblock %}
 {% load staticfiles %}
-{% block head_active %}
-			<nav>
-				<div class="nav">
-					<div class="wp">
-						<ul>
-							<li ><a href="{% url 'index' %}">首页</a></li>
-							<li class="active">
-								<a href="{% url 'course:course_list' %}">
-									公开课<img class="hot" src="/static/images/nav_hot.png">
-								</a>
-							</li>
-							<li >
-								<a href="{% url 'org:teacher_list' %}">授课教师</a>
-							</li>
-							<li ><a href="{% url 'org:org_list' %}">授课机构</a></li>
-						</ul>
-					</div>
-				</div>
-			</nav>
-{% endblock %}
+
 {% block custom_bread %}
     <section>
         <div class="wp">
@@ -99,12 +80,12 @@
                     {% for hot_course in hot_courses %}
                     <dl>
 						<dt>
-							<a target="_blank" href="">
+							<a target="_blank" href="{% url 'course:course_detail' hot_course.id%}">
 								<img width="240" height="220" class="scrollLoading" src="{{ MEDIA_URL }}{{ hot_course.image }}"/>
 							</a>
 						</dt>
 						<dd>
-							<a target="_blank" href=""><h2> {{ hot_course.name }}</h2></a>
+							<a target="_blank" href="{% url 'course:course_detail' hot_course.id%}"><h2> {{ hot_course.name }}</h2></a>
 							<span class="fl">难度：<i class="key">{{ hot_course.get_degree_display }}</i></span>
                                <!-- 显示中文字符get_degree_display -->
 						</dd>

@@ -1309,15 +1309,16 @@ textarea:focus {
 /*select*/
 .selectContainer {
     margin: 5px;
-    width: 80px;
+    width: 70px;
     height: 27px;
     line-height: 27px;
     position: relative;
+    padding-left: 5px;
 }
 
 .selectOption {
     color: #67ae56;
-    background: url('../images/select_arrow.png') no-repeat 85% 60%;
+    background: url('../images/select_arrow.png') no-repeat 85% 55%;
     display: block;
     cursor: pointer;
 }
@@ -1360,7 +1361,7 @@ textarea:focus {
 .searchbox input {
     width: 320px;
     height: 20px;
-    margin-top: 10px;
+    margin-top: 8px;
     border: 0;
     border-left: 1px solid #cecece;
     text-indent: 10px;
