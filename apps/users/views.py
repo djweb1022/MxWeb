@@ -1,10 +1,12 @@
 # -*- coding:utf-8 -*-
+import json
 from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic import View
 from django.contrib.auth.hashers import make_password
+from django.http import HttpResponse
 
 from .models import UserProfile, EmailVerifyRecord
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UploadImageForm
@@ -116,6 +118,7 @@ class ResetView(View):
 
 
 class ModifyPwdView(View):
+    """修改用户密码(未登录时)"""
     def post(self, request):
         active_code = request.POST.get('active_code', '')
         user_click = EmailVerifyRecord.objects.get(code=active_code)
@@ -169,4 +172,29 @@ class UploadImageView(LoginRequiredMixIn, View):
             # image = image_form.cleaned_data['image']
             # request.user.image = image
             image_form.save()
-            pass
+            return HttpResponse('{"status":"success"}', content_type='application/json')
+        else:
+            return HttpResponse('{"status":"fail"}', content_type='application/json')
+
+
+class UpdatePwdView(View):
+    """在个人中心修改用户密码(已登录)"""
+    def post(self, request):
+        # active_code = request.POST.get('active_code', '')
+        # user_click = EmailVerifyRecord.objects.get(code=active_code)
+        modify_form = ModifyPwdForm(request.POST)
+        if modify_form.is_valid():
+            pwd1 = request.POST.get('password1', '')
+            pwd2 = request.POST.get('password2', '')
+            # email = request.POST.get('email', '')
+            if pwd1 != pwd2:
+                return HttpResponse('{"status":"fail", "msg": "密码不一致！"}', content_type='application/json')
+            user = request.user
+            user.password = make_password(pwd2)
+            user.save()
+            # user_click.is_click = True
+            # user_click.save()
+            return HttpResponse('{"status":"success", "msg": "修改成功！"}', content_type='application/json')
+        else:
+            # email = request.POST.get('email', '')
+            return HttpResponse(json.dumps(modify_form.errors), content_type='application/json')
