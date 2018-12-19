@@ -9,6 +9,7 @@ from django.contrib.auth.hashers import make_password
 from .models import UserProfile, EmailVerifyRecord
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm
 from utils.email_send import send_register_email
+from utils.mixin_utils import LoginRequiredMixIn
 
 # Create your views here.
 
@@ -151,3 +152,10 @@ class ModifyPwdView(View):
 #         return render(request, 'login.html', {})
 # 用函数的方式书写Login逻辑，替换为基于类来实现 6-4
 # 6-6 finish
+
+class UserinfoView(LoginRequiredMixIn, View):
+    """用户个人信息"""
+    def get(self, request):
+        return render(request, 'usercenter-info.html', {
+
+        })
