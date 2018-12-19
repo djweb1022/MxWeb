@@ -188,13 +188,28 @@ class UpdatePwdView(View):
             pwd2 = request.POST.get('password2', '')
             # email = request.POST.get('email', '')
             if pwd1 != pwd2:
-                return HttpResponse('{"status":"fail", "msg": "密码不一致！"}', content_type='application/json')
+                return HttpResponse('{"status": "fail", "msg": "密码不一致！"}', content_type='application/json')
             user = request.user
             user.password = make_password(pwd2)
             user.save()
             # user_click.is_click = True
             # user_click.save()
-            return HttpResponse('{"status":"success", "msg": "修改成功！"}', content_type='application/json')
+            return HttpResponse('{"status": "success", "msg": "修改成功！"}', content_type='application/json')
         else:
             # email = request.POST.get('email', '')
             return HttpResponse(json.dumps(modify_form.errors), content_type='application/json')
+
+
+class SendEmailCodeView(LoginRequiredMixIn, View):
+    """发送邮箱验证码"""
+    def get(self, request):
+        email = request.GET.get('email', '')
+
+        if UserProfile.objects.filter(email=email):
+            return HttpResponse('{"email": "邮箱已经存在"}', content_type='application/json')
+        send_register_email(email, 'update_email')
+        return HttpResponse('{"status": "success"}', content_type='application/json')
+
+
+class UpdateEmailView(LoginRequiredMixIn, View):
+    """修改个人邮箱"""
