@@ -113,9 +113,18 @@ class OrgCourseView(View):
                 has_fav = True
 
         all_courses = course_org.course_set.all()  # 从外键反取类
+
+        # 对课程进行分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        p = Paginator(all_courses, 8, request=request)
+        courses = p.page(page)
+
         # all_teachers = course_org.teacher_set.all()[:1]
         return render(request, 'org-detail-course.html', {
-            'all_courses': all_courses,
+            'all_courses': courses,
             # 'all_teachers': all_teachers,
             'course_org': course_org,
             'current_page': current_page,
