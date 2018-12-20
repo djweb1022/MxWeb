@@ -3430,7 +3430,7 @@ footer .footer .line {
     height: 30px;
     line-height: 30px;
     width: 300px;
-    padding-left: 0;
+    /*padding-left: 0;*/
 }
 
 .butler_list .cont li span {

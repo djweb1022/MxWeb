@@ -10,10 +10,11 @@ from django.http import HttpResponse
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import UserProfile, EmailVerifyRecord
-from operation.models import UserCourse
+from operation.models import UserCourse, UserFavorite
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UploadImageForm, UserInfoForm
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixIn
+from organization.models import CourseOrg, Teacher
 
 # Create your views here.
 
@@ -236,16 +237,64 @@ class UpdateEmailView(LoginRequiredMixIn, View):
 
 
 class MyCourseView(LoginRequiredMixIn, View):
+    """我的课程"""
     def get(self, request):
         user_courses = UserCourse.objects.filter(user=request.user)
 
-        # 对课程进行分页
+        # 分页
         try:
             page = request.GET.get('page', 1)
         except PageNotAnInteger:
             page = 1
         p = Paginator(user_courses, 4, request=request)
         courses = p.page(page)
+
         return render(request, 'usercenter-mycourse.html', {
             'user_courses': courses,
+        })
+
+
+class MyFavOrgView(LoginRequiredMixIn, View):
+    """我收藏的课程机构"""
+    def get(self, request):
+        org_list = []
+        fav_orgs = UserFavorite.objects.filter(user=request.user, fav_type=2)
+        for fav_org in fav_orgs:
+            org_id = fav_org.fav_id
+            org = CourseOrg.objects.get(id=org_id)
+            org_list.append(org)
+
+        # 分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        p = Paginator(org_list, 4, request=request)
+        org_page = p.page(page)
+
+        return render(request, 'usercenter-fav-org.html', {
+            'org_list': org_page,
+        })
+
+
+class MyFavTeacherView(LoginRequiredMixIn, View):
+    """我收藏的授课教师"""
+    def get(self, request):
+        teacher_list = []
+        fav_teachers = UserFavorite.objects.filter(user=request.user, fav_type=3)
+        for fav_teacher in fav_teachers:
+            teacher_id = fav_teacher.fav_id
+            teacher = Teacher.objects.get(id=teacher_id)
+            teacher_list.append(teacher)
+
+        # 分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        p = Paginator(teacher_list, 4, request=request)
+        teacher_page = p.page(page)
+
+        return render(request, 'usercenter-fav-teacher.html', {
+            'teacher_list': teacher_page,
         })
