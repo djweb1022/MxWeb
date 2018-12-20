@@ -528,7 +528,7 @@ caption {
 
 .header .top .msg-num {
     float: right;
-    margin-right: 120px;
+    /*margin-right: 120px;*/
     height: 38px;
     width: 60px;
     background: url(../images/laba.png) no-repeat 0 center;
