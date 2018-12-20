@@ -7,8 +7,10 @@ from django.db.models import Q
 from django.views.generic import View
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse
+from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import UserProfile, EmailVerifyRecord
+from operation.models import UserCourse
 from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UploadImageForm, UserInfoForm
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixIn
@@ -231,3 +233,19 @@ class UpdateEmailView(LoginRequiredMixIn, View):
             return HttpResponse('{"status": "success"}', content_type='application/json')
         else:
             return HttpResponse('{"email": "验证码出错"}', content_type='application/json')
+
+
+class MyCourseView(LoginRequiredMixIn, View):
+    def get(self, request):
+        user_courses = UserCourse.objects.filter(user=request.user)
+
+        # 对课程进行分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        p = Paginator(user_courses, 4, request=request)
+        courses = p.page(page)
+        return render(request, 'usercenter-mycourse.html', {
+            'user_courses': courses,
+        })
