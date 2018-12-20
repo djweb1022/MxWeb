@@ -25,7 +25,7 @@
                     <ul class="tab_header messagehead">
                         <li><a href="{% url 'users:myfav_org' %}">课程机构</a> </li>
                         <li class="active"><a href="{% url 'users:myfav_teacher' %}">授课教师 </a></li>
-                        <li><a href="usercenter-fav-course.html">公开课程</a></li>
+                        <li><a href="{% url 'users:myfav_course' %}">公开课程</a></li>
                     </ul>
                 </div>
                 <div class="messagelist">
@@ -52,7 +52,7 @@
                                     <li class="c7">公司职位：<span>{{ teacher.work_position }}</span></li>
                                 </ul>
                             </dd>
-                            <div class="delete jsDeleteFav_teacher" data-favid="1"></div>
+                            <div class="delete jsDeleteFav_teacher" data-favid="{{ teacher.id }}"></div>
                         </dl>
                     </div>
                     {% endfor %}

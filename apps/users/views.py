@@ -15,6 +15,7 @@ from .forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm, UploadIma
 from utils.email_send import send_register_email
 from utils.mixin_utils import LoginRequiredMixIn
 from organization.models import CourseOrg, Teacher
+from courses.models import Course
 
 # Create your views here.
 
@@ -297,4 +298,27 @@ class MyFavTeacherView(LoginRequiredMixIn, View):
 
         return render(request, 'usercenter-fav-teacher.html', {
             'teacher_list': teacher_page,
+        })
+
+
+class MyFavCourseView(LoginRequiredMixIn, View):
+    """我收藏的课程"""
+    def get(self, request):
+        course_list = []
+        fav_courses = UserFavorite.objects.filter(user=request.user, fav_type=1)
+        for fav_course in fav_courses:
+            course_id = fav_course.fav_id
+            course = Course.objects.get(id=course_id)
+            course_list.append(course)
+
+        # 分页
+        try:
+            page = request.GET.get('page', 1)
+        except PageNotAnInteger:
+            page = 1
+        p = Paginator(course_list, 4, request=request)
+        course_page = p.page(page)
+
+        return render(request, 'usercenter-fav-course.html', {
+            'course_list': course_page,
         })
