@@ -1,12 +1,12 @@
 # -*- coding:utf-8 -*-
 import json
 from django.shortcuts import render
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.backends import ModelBackend
 from django.db.models import Q
 from django.views.generic import View
 from django.contrib.auth.hashers import make_password
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 
 from .models import UserProfile, EmailVerifyRecord
@@ -69,11 +69,18 @@ class RegisterView(View):
             user_message.message = '欢迎注册！'
             user_message.save()
 
-
             send_register_email(user_name, 'register')
             return render(request, 'login.html')
         else:
             return render(request, 'register.html', {'register_form': register_form})
+
+
+class LogoutView(View):
+    """用户登出"""
+    def get(self, request):
+        logout(request)
+        from django.core.urlresolvers import reverse
+        return HttpResponseRedirect(reverse('index'))
 
 
 class LoginView(View):
@@ -336,6 +343,12 @@ class MymessageView(LoginRequiredMixIn, View):
     """我的消息"""
     def get(self, request):
         all_messages = UserMessage.objects.filter(user=request.user.id).order_by('-add_time')
+
+        # 用户进入个人消息后清空未读
+        all_unread_messages = UserMessage.objects.filter(user=request.user.id, has_read=False)
+        for all_unread_message in all_unread_messages:
+            all_unread_message.has_read = True
+            all_unread_message.save()
 
         # 分页
         try:

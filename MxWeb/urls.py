@@ -21,7 +21,7 @@ from django.views.static import serve
 import xadmin
 
 # from users.views import user_login  #基于函数方法的书写
-from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView  # 基于类的书写
+from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView, LogoutView  # 基于类的书写
 from organization.views import OrgView
 from MxWeb.settings import MEDIA_ROOT
 
@@ -31,6 +31,7 @@ urlpatterns = [
     # url(r'^login/$', TemplateView.as_view(template_name='login.html'), name='login'),
     # url(r'^login/$', user_login, name='login'),
     url(r'^login/$', LoginView.as_view(), name='login'),
+    url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^register/$', RegisterView.as_view(), name='register'),
     url(r'^captcha/', include('captcha.urls')),
     url(r'^active/(?P<active_code>.*)/$', ActiveUserView.as_view(), name='user_active'),

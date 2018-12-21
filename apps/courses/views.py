@@ -51,7 +51,7 @@ class CourseDetailView(View):
     """课程详情页"""
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
-        # 增加课程点击数
+        # 课程点击数+1
         course.click_nums += 1
         course.save()
 
@@ -81,6 +81,9 @@ class CourseInfoView(LoginRequiredMixIn, View):
     """课程章节信息"""
     def get(self, request, course_id):
         course = Course.objects.get(id=int(course_id))
+        # 学习人数点击数+1
+        course.students += 1
+        course.save()
 
         # 查询用户是否已经关联了该课程
         user_relate = UserCourse.objects.filter(user=request.user, course=course)
