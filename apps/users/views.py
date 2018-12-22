@@ -8,6 +8,7 @@ from django.views.generic import View
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse, HttpResponseRedirect
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse
 
 from .models import UserProfile, EmailVerifyRecord, Banner
 from operation.models import UserCourse, UserFavorite, UserMessage
@@ -79,7 +80,7 @@ class LogoutView(View):
     """用户登出"""
     def get(self, request):
         logout(request)
-        from django.core.urlresolvers import reverse
+
         return HttpResponseRedirect(reverse('index'))
 
 
@@ -97,7 +98,8 @@ class LoginView(View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return render(request, 'index.html')
+                    # return render(request, 'index.html') 数据无法返回
+                    return HttpResponseRedirect(reverse('index'))
                 else:
                     return render(request, 'login.html', {'msg': '用户未激活！'})
             else:
