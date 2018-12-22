@@ -21,13 +21,13 @@ from django.views.static import serve
 import xadmin
 
 # from users.views import user_login  #基于函数方法的书写
-from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView, LogoutView  # 基于类的书写
+from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView, LogoutView, IndexView  # 基于类的书写
 from organization.views import OrgView
 from MxWeb.settings import MEDIA_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
-    url(r'^$', TemplateView.as_view(template_name='index.html'), name='index'),
+    url(r'^$', IndexView.as_view(), name='index'),
     # url(r'^login/$', TemplateView.as_view(template_name='login.html'), name='login'),
     # url(r'^login/$', user_login, name='login'),
     url(r'^login/$', LoginView.as_view(), name='login'),
