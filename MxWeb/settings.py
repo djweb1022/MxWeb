@@ -27,7 +27,7 @@ SECRET_KEY = '8!vjcyi1h6&4umt-3ez!jq!@7vd*v+rq6_i2k9w2=mvcr&$g1b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 # 为显示美化后的404页面，DEBUG改为False，系统识别为生产环境，STATIC_URL和STATICFILES_DIRS失效，需在url中配置访问处理函数
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -140,10 +140,10 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
+
 # STATICFILES_DIRS = (
 #     os.path.join(BASE_DIR, 'static'),
 # )
@@ -157,3 +157,5 @@ EMAIL_FROM = 'forhappyday@126.com'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
