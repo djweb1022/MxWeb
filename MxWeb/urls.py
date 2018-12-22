@@ -23,7 +23,7 @@ import xadmin
 # from users.views import user_login  #基于函数方法的书写
 from users.views import LoginView, RegisterView, ActiveUserView, ForgetPwdView, ResetView, ModifyPwdView, LogoutView, IndexView  # 基于类的书写
 from organization.views import OrgView
-from MxWeb.settings import MEDIA_ROOT
+from MxWeb.settings import MEDIA_ROOT, STATIC_ROOT
 
 urlpatterns = [
     url(r'^xadmin/', xadmin.site.urls),
@@ -48,6 +48,15 @@ urlpatterns = [
     # 配置上传文件的访问处理函数
     url(r'^media/(?P<path>.*)/$', serve, {'document_root': MEDIA_ROOT}),
 
+    # 配置用于全局404调试的静态文件访问处理函数
+    url(r'^static/(?P<path>.*)/$', serve, {'document_root': STATIC_ROOT}),
+
     # 课程相关url配置
     url(r'^users/', include('users.urls', namespace='users')),
 ]
+
+# 全局404页面配置
+handler404 = 'users.views.page_not_found'
+
+# 全局500页面配置
+handler500 = 'users.views.page_error'

@@ -26,9 +26,10 @@ sys.path.insert(0, os.path.join(BASE_DIR, 'extra_apps'))
 SECRET_KEY = '8!vjcyi1h6&4umt-3ez!jq!@7vd*v+rq6_i2k9w2=mvcr&$g1b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# 为显示美化后的404页面，DEBUG改为False，系统识别为生产环境，STATIC_URL和STATICFILES_DIRS失效，需在url中配置访问处理函数
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -139,7 +140,7 @@ USE_TZ = False
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static')
 ]
