@@ -9,6 +9,7 @@ from .models import CourseOrg, CityDict, Teacher
 from courses.models import Course
 from operation.models import UserFavorite
 from .forms import UserAskForm
+from courses.models import Course
 
 # Create your views here.
 
@@ -19,6 +20,15 @@ class OrgView(View):
         # 课程机构
         all_orgs = CourseOrg.objects.all()
         hot_orgs = all_orgs.order_by('-click_nums')[:3]
+
+        # 统计课程机构名下所有课程学习人数之和
+
+        for one_org in all_orgs:
+            one_org_courses = Course.objects.filter(course_org=one_org)
+            students = 0
+            for one_org_one_course in one_org_courses:
+                students += one_org_one_course.students
+            one_org.students = students
 
         # 城市
         all_citys = CityDict.objects.all()
@@ -64,7 +74,7 @@ class OrgView(View):
             'city_id': city_id,
             'category': category,
             'hot_orgs': hot_orgs,
-            'sort': sort
+            'sort': sort,
         })
 
 
@@ -291,12 +301,12 @@ class TeacherDetailView(View):
         all_courses = Course.objects.filter(teacher=teacher)
 
         has_teacher_faved = False
-        if UserFavorite.objects.filter(user=request.user, fav_id=int(teacher.id), fav_type=3):
-            has_teacher_faved = True
-
         has_org_faved = False
-        if UserFavorite.objects.filter(user=request.user, fav_id=int(teacher.org.id), fav_type=2):
-            has_org_faved = True
+        if request.user.is_authenticated():
+            if UserFavorite.objects.filter(user=request.user, fav_id=int(teacher.id), fav_type=3):
+                has_teacher_faved = True
+            if UserFavorite.objects.filter(user=request.user, fav_id=int(teacher.org.id), fav_type=2):
+                has_org_faved = True
 
         # 排行榜
         sorted_teachers = Teacher.objects.all().order_by('-click_nums')[:3]
