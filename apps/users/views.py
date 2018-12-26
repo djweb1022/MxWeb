@@ -71,7 +71,7 @@ class RegisterView(View):
             user_message.save()
 
             send_register_email(user_name, 'register')
-            return render(request, 'login.html')
+            return render(request, 'login.html', {'msg': '激活邮件已发送！'})
         else:
             return render(request, 'register.html', {'register_form': register_form})
 

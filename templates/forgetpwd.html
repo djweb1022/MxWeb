@@ -51,8 +51,8 @@
             <p class="fl hd-tips">慕学网，在线学习平台！</p>
             <ul class="fr hd-bar">
                 <li>服务电话：<span>33333333</span></li>
-                <li><a href="login.html">[登录]</a></li>
-                <li class="active"><a href="/forgetpwd/">[忘记密码]</a></li>
+                <li><a href="{% url 'login' %}">[登录]</a></li>
+                <li class="active"><a href="{% url 'forget_pwd' %}">[忘记密码]</a></li>
             </ul>
         </div>
     </div>
@@ -82,7 +82,8 @@
                     <!-- <input type='hidden' name='csrfmiddlewaretoken' value='mymQDzHWl2REXIfPMg2mJaLqDfaS1sD5' /> -->
                     <div class="form-group marb20 {% if forget_form.errors.email %}errorput{% endif %}">
                         <label>帐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号</label>
-                        <input type="text" id="account" name="email" value="{{ forget_form.email.value }}" placeholder="邮箱" />
+{#                        <input type="text" id="account" name="email" value="{{ forget_form.email.value }}" placeholder="邮箱" />#}
+                        <input type="text" id="account" name="email" placeholder="请输入邮箱" />
                     </div>
                     <div class="form-group captcha1 marb38 {% if forget_form.errors.captcha %}errorput{% endif %}">
                         <label>验&nbsp;证&nbsp;码</label>
@@ -92,7 +93,7 @@
                     <div class="error btns" id="jsForgetTips">{% for key,error in forget_form.errors.items %}{{ error }}{% endfor %}{{ msg }}</div>
                     <input type="hidden" name="sms_type" value="1">
                     <input class="btn btn-green" id="jsFindPwdBtn" type="submit" value="提交" />
-                    <p class="form-p" style="bottom:40px;">您还可以<a href="login.html"> [直接登录]</a></p>
+                    <p class="form-p" style="bottom:40px;">您还可以<a href="{% url 'login' %}"> [直接登录]</a></p>
                 <!-- <input type='hidden' name='csrfmiddlewaretoken' value='5I2SlleZJOMUX9QbwYLUIAOshdrdpRcy' /> -->
                 {% csrf_token %}
                 </form>
