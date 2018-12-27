@@ -124,6 +124,7 @@ class ForgetPwdView(View):
 
 
 class ResetView(View):
+    """进入密码重置页面(未登录时)"""
     def get(self, request, active_code):
         all_records = EmailVerifyRecord.objects.filter(code=active_code)
         user_click = EmailVerifyRecord.objects.get(code=active_code)
@@ -139,7 +140,7 @@ class ResetView(View):
 
 
 class ModifyPwdView(View):
-    """修改用户密码(未登录时)"""
+    """修改用户密码，表单逻辑(未登录时)"""
     def post(self, request):
         active_code = request.POST.get('active_code', '')
         user_click = EmailVerifyRecord.objects.get(code=active_code)

@@ -22,13 +22,20 @@ class OrgView(View):
         hot_orgs = all_orgs.order_by('-click_nums')[:3]
 
         # 统计课程机构名下所有课程学习人数之和
-
         for one_org in all_orgs:
             one_org_courses = Course.objects.filter(course_org=one_org)
             students = 0
             for one_org_one_course in one_org_courses:
                 students += one_org_one_course.students
             one_org.students = students
+            one_org.save()
+
+        # 统计课程机构名下所有课程数
+        for one_org in all_orgs:
+            one_org_courses = Course.objects.filter(course_org=one_org)
+            count_courses = int(one_org_courses.count())
+            one_org.course_nums = count_courses
+            one_org.save()
 
         # 城市
         all_citys = CityDict.objects.all()
