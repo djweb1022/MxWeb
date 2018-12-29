@@ -23,12 +23,12 @@
 				<div class="left">
 					<div class="picbox">
 						<div class="tb-booth tb-pic">
-							<img width="440" height="445" src="{{ MEDIA_URL }}{{ course.image }}" class="jqzoom" />
+							<img width="440" height="365" src="{{ MEDIA_URL }}{{ course.image }}" class="jqzoom" />
 						</div>
 
 					</div>
 					<div class="des">
-						<h1 title="django 从入门到精通体验开始了">{{ course.name }}</h1>
+						<h1 title="{{ course.name }}">{{ course.name }}</h1>
 						<span class="key">{{ course.desc }}</span>
 						<div class="prize">
 							<span class="fl">难度：<i class="key">{{ course.get_degree_display }}</i></span>
@@ -40,7 +40,7 @@
                             <li><span class="pram word3">课程类别：</span><span title="">{{ course.category }}</span></li>
 							<li class="piclist"><span class="pram word4">学习用户：</span>
                                 {% for user_course in course.get_learn_users %}
-                                    <span class="pic" title="{{ user_course.user.username }}"><img width="40" height="40" src="{{ MEDIA_URL }}{{ user_course.user.image }}"/></span>
+                                    <span class="pic" title="{{ user_course.user.username }}"><img width="40" height="40" style="" src="{{ MEDIA_URL }}{{ user_course.user.image }}"/></span>
                                 {% endfor %}
 							</li>
 						</ul>
@@ -57,7 +57,7 @@
                              data-desc="我在#慕课网#发现了"
                              data-comment=""
                              data-url="/group/groupdetail/15/">
-                            <span class="fl">分享到：</span>
+                            <span class="fl" hidden>分享到：</span>
                             <a href="#" class="bds_more" data-cmd="more"></a>
                             <a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a>
                             <a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a>
