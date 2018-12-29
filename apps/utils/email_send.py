@@ -43,6 +43,7 @@ def send_register_email(email, send_type='register'):
 
 
 def random_str(randomlength=8):
+    """随机字符串生成"""
     str = ''
     chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789'
     length = len(chars)-1

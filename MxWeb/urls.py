@@ -55,7 +55,7 @@ urlpatterns = [
     # # 配置用于全局404调试的静态文件访问处理函数
     # url(r'^static/(?P<path>.*)/$', serve, {'document_root': STATIC_ROOT}),
 
-    # 课程相关url配置
+    # 用户相关url配置
     url(r'^users/', include('users.urls', namespace='users')),
 ]
 

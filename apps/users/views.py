@@ -46,6 +46,7 @@ class ActiveUserView(View):
 
 
 class RegisterView(View):
+    """用户注册"""
     def get(self, request):
         register_form = RegisterForm()
         return render(request, 'register.html', {'register_form': register_form})
@@ -85,6 +86,7 @@ class LogoutView(View):
 
 
 class LoginView(View):
+    """用户登录"""
     def get(self, request):
         return render(request, 'login.html', {})
 
