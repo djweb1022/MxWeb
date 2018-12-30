@@ -54,6 +54,7 @@
 							<li>就职公司：<span>{{ teacher.work_company }}&nbsp;</span></li>
 							<li>年龄：<span>{{ teacher.age }}岁</span></li>
 							<li>教学特点：<span>{{ teacher.points }}</span></li>
+                            <li>点击数：<span>{{ teacher.click_nums }}</span></li>
 						</ul>
 					</dd>
                     <a class="buy buyservice" href="/org/teacher/detail/1/"><br/>查看<br/>详情</a>
@@ -88,7 +89,7 @@
 		<div class="head">讲师排行榜</div>
         {% for hot_teacher in sorted_teachers %}
             <dl class="des">
-                <span class="num fl">1</span>
+                <span class="num fl">{{ forloop.counter }}</span>
                 <a href="{% url 'org:teacher_detail' hot_teacher.id %}">
                     <dt>
                         <img width="50" height="50" class="scrollLoading"  src="{{ MEDIA_URL }}{{ hot_teacher.image }}"/>
@@ -98,7 +99,7 @@
                     <a href="{% url 'org:teacher_detail' hot_teacher.id %}">
                         <h1 title="{{ hot_teacher.name }}">{{ hot_teacher.name }}</h1>
                     </a>
-                    <p>工作年限：<span>{{ hot_teacher.work_years }}年</span></p>
+                    <p>点击数：<span>{{ hot_teacher.click_nums }}</span></p>
                 </dd>
             </dl>
         {% endfor %}

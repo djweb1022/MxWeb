@@ -1304,6 +1304,7 @@ textarea:focus {
 .header .middle .wp {
     height: 100%;
     background: url(../images/header_middle.png) no-repeat right 10px;
+    overflow: hidden;
 }
 
 /*select*/
@@ -1899,7 +1900,7 @@ textarea:focus {
 }
 
 .group_list .box img {
-    height: 190px;
+    height: 160px;
 }
 
 .group_list .des {
@@ -2190,7 +2191,7 @@ textarea:focus {
     width: 50px;
     height: 50px;
     margin-left: 57px;
-    margin-top: 15px;
+    margin-top: 5px;
     padding: 10px;
     border: 1px solid #fff;
     border-radius: 50%;
@@ -5335,7 +5336,7 @@ footer .footer .line {
 }
 
 .companycenter .group_list .box {
-    height: 300px;
+    height: 280px;
     position: relative;
     margin: 30px 10px;
     width: 214px !important;
@@ -5344,7 +5345,7 @@ footer .footer .line {
 .companycenter .group_list .box .des {
     width: 95%;
     margin: 2%;
-    height: 90px;
+    height: 60px;
     border: 0;
     position: relative;
 }
@@ -9122,4 +9123,12 @@ table .upload-btn {
 .registbox .mobile-register-captcha{
     height:auto;
     left:auto;
+}
+
+.imgPlace{
+    position:relative;
+    /*position:absolute;*/
+    bottom:5px;
+    height: 115px;
+    /*left: 50%;*/
 }

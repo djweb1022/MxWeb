@@ -116,11 +116,11 @@ class CommentView(LoginRequiredMixIn, View):
         user_courses = UserCourse.objects.filter(course=course)  # 获取“用户课程”表里面该课程的所有记录
         user_ids = [user_course.user.id for user_course in user_courses]  # 获取学过该课程的所有用户id
         all_user_courses = UserCourse.objects.filter(user_id__in=user_ids)  # 获取这些用户学过的课程记录
-        course_ids = [user_course.id for user_course in all_user_courses]  # 获取这些课程的id
+        course_ids = [user_course.course_id for user_course in all_user_courses]  # 获取这些课程的id
         relate_courses = Course.objects.filter(id__in=course_ids).order_by('-click_nums')[:5]  # 根据点击量取出5个
 
         all_resources = CourseResource.objects.filter(course=course)
-        all_comments = CourseComments.objects.all()
+        all_comments = CourseComments.objects.all().order_by('-add_time')
         return render(request, 'course-comment.html', {
             'course': course,
             'course_resources': all_resources,

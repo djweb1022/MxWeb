@@ -37,8 +37,8 @@
                                     <a href="{% url 'course:course_detail' course.id%}">
                                         <h2>{{ course.name }}</h2>
                                     </a>
-                                    <span class="fl">时长：<i class="key">{{ course.learn_times }}</i></span>
-                                    <span class="fr">学习人数：{{ course.students }}&nbsp;&nbsp;</span>
+                                    <span class="fl">时长：<i class="key">{{ course.learn_times }}分钟</i></span>
+                                    <span class="fr">{% if sort == 'students' %}学习人数：{{ course.students }}{% elif sort == 'hot' %}点击数：{{ course.click_nums }}{% elif sort == '' %}{{ course.add_time }}{% endif %}&nbsp;&nbsp;</span>
                                 </div>
                                 <div class="bottom">
                                     <a href="{% url 'course:course_detail' course.id%}"><span class="fl">来自{{ course.course_org.name }}</span></a>
@@ -81,7 +81,7 @@
                     <dl>
 						<dt>
 							<a target="_blank" href="{% url 'course:course_detail' hot_course.id%}">
-								<img width="240" height="220" class="scrollLoading" src="{{ MEDIA_URL }}{{ hot_course.image }}"/>
+								<img width="240" height="180" class="scrollLoading" src="{{ MEDIA_URL }}{{ hot_course.image }}"/>
 							</a>
 						</dt>
 						<dd>
