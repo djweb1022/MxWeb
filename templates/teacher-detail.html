@@ -40,7 +40,7 @@
                             </div>
                         </dt>
                         <dd>
-                            <a href="/diary/hk_detail/10/">
+                            <a href="{% url 'org:teacher_detail' teacher.id %}">
                                 <h1>{{ teacher.name }}<span class="key picbig">金牌讲师</span></h1>
                             </a>
                             <ul class="cont">
@@ -97,7 +97,7 @@
                 </div>
                 <div class="pic">
                     <a href="{% url 'org:org_home' teacher.org.id %}">
-                        <img width="150" height="80" src="{{ MEDIA_URL }}{{ teacher.org.image }}"/>
+                        <img width="200" height="80" src="{{ MEDIA_URL }}{{ teacher.org.image }}"/>
                     </a>
                 </div>
                 <a href="{% url 'org:org_home' teacher.org.id %}">
@@ -123,7 +123,7 @@
                                 <a href="{% url 'org:teacher_detail' hot_teacher.id %}">
                                     <h1 title="{{ hot_teacher.name }}">{{ hot_teacher.name }}</h1>
                                 </a>
-                                <p>工作年限：<span>{{ hot_teacher.work_years }}年</span></p>
+                                <p>点击数：<span>{{ hot_teacher.click_nums }}</span></p>
                             </dd>
                         </dl>
                         {% endfor %}
