@@ -282,7 +282,10 @@ class TeacherListView(View):
                 all_teachers = all_teachers.order_by('-click_nums')
 
         # 排行榜
-        sorted_teachers = Teacher.objects.all().order_by('-click_nums')[:3]
+        sorted_teachers = Teacher.objects.all().order_by('-click_nums')[:5]
+
+        # 统计教师数
+        teacher_nums = all_teachers.count()
 
         # 对讲师进行分页
         try:
@@ -296,6 +299,7 @@ class TeacherListView(View):
             'all_teachers': teachers,
             'sorted_teachers': sorted_teachers,
             'sort': sort,
+            'teacher_nums': teacher_nums,
         })
 
 

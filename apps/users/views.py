@@ -119,6 +119,8 @@ class ForgetPwdView(View):
         forget_form = ForgetForm(request.POST)
         if forget_form.is_valid():
             email = request.POST.get('email', '')
+            if not UserProfile.objects.filter(email=email):
+                return render(request, 'forgetpwd.html', {'forget_form': forget_form, 'msg': '用户不存在'})
             send_register_email(email, 'forget')
             return render(request, 'send_success.html')
         else:

@@ -1304,7 +1304,7 @@ textarea:focus {
 .header .middle .wp {
     height: 100%;
     background: url(../images/header_middle.png) no-repeat right 10px;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 
 /*select*/
@@ -1910,14 +1910,14 @@ textarea:focus {
 }
 
 .group_list .des {
-    width: 94%;
+    width: 97%;
     margin-left: 3%;
     position: relative;
     height: 70px;
 }
 
 .group_list .des span {
-    position: absolute;
+    position: relative;
     bottom: 0;
     color: #9f9f9f;
 }
@@ -1932,16 +1932,22 @@ textarea:focus {
 }
 
 .group_list .des .fr {
-    right: 0;
+    right: 0px;
+    bottom: 8px;
+}
+
+.kk {
+    padding-right: 5px;
     bottom: 8px;
 }
 
 .group_list .des h2 {
     line-height: 45px;
-    font-size: 18px;
+    font-size: 16px;
     overflow: hidden;
     color: #434343;
     word-break: break-all;
+    margin-bottom: 10px;
 }
 
 .group_list .des a:hover h2 {
@@ -2805,7 +2811,7 @@ footer .footer .line {
 
 .list .group_list .box {
     width: 280px;
-    height: 320px;
+    height: 300px;
     margin: 3px;
     overflow: hidden;
 }
@@ -2820,12 +2826,14 @@ footer .footer .line {
 }
 
 .list .group_list .box .des h2 {
-    font-size: 18px;
-    line-height: 30px;
+    font-size: 17px;
+    line-height: 40px;
 }
 
 .list .group_list .des span {
     font-size: 14px;
+    /*margin-top: 15px;*/
+    /*line-height: 10px;*/
 }
 
 .list .group_list .des .key {
@@ -2850,9 +2858,11 @@ footer .footer .line {
 }
 
 .list .group_recommend h2 {
-    font-size: 12px;
+    font-size: 14px;
     color: #4f4f4f;
     line-height: 20px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 .list .group_recommend .key {
@@ -4270,7 +4280,7 @@ footer .footer .line {
 .personal_list .brief .des .key {
     background: url(../images/authentication.png) no-repeat left center;
     padding: 30px;
-    margin-left: 10px;
+    /*margin-left: 10px;*/
     color: #ff7800;
     font-size: 14px;
 }
@@ -5166,7 +5176,7 @@ footer .footer .line {
 }
 
 .companycenter {
-    line-height: 200%;
+    /*line-height: 200%;*/
 }
 
 .companycenter .head .more {
@@ -5346,7 +5356,10 @@ footer .footer .line {
 .companycenter .group_list .box {
     height: 280px;
     position: relative;
-    margin: 30px 10px;
+    margin-top: 30px;
+    /*margin-bottom: 15px;*/
+    margin-left: 10px;
+    margin-right: 10px;
     width: 214px !important;
 }
 
@@ -5359,9 +5372,10 @@ footer .footer .line {
 }
 
 .companycenter .group_list .box .des h2 {
+    /*padding-bottom: 10px;*/
     height: 30px;
     line-height: 30px;
-    font-size: 18px !important;
+    font-size: 16px !important;
 }
 
 .companycenter .group_list .des span {
@@ -5388,12 +5402,14 @@ footer .footer .line {
     color: #858484;
     height: auto;
     overflow: hidden;
+    line-height: 30px;
 }
 
 .companycenter .des h2 {
     font-size: 16px;
     color: #333333;
     line-height: 50px;
+    /*padding-bottom: 10px;*/
 }
 
 .companycenter .comenlist {
@@ -6263,7 +6279,7 @@ footer .footer .line {
 
 .messages.butler_list.company dt {
     float: left;
-    width: 160px;
+    width: 210px;
     height: 90px;
     overflow: hidden;
     border: 1px solid #eaeaea;
@@ -8393,7 +8409,7 @@ table .upload-btn {
 }
 
 .butler_list.company-fav-box dd {
-    width: 735px !important;
+    width: 680px !important;
 }
 
 .company-credit img {
@@ -8580,7 +8596,7 @@ table .upload-btn {
 .comp-img-box {
     position: relative;
     display: block;
-    height: 190px;
+    height: 160px;
     line-height: normal;
     border-bottom: 1px solid #eaeaea;
     overflow: hidden;
@@ -9136,7 +9152,9 @@ table .upload-btn {
 .imgPlace{
     position:relative;
     /*position:absolute;*/
-    bottom:5px;
-    height: 115px;
+    /*bottom:5px;*/
+    /*height: 115px;*/
+    /*overflow: hidden;*/
     /*left: 50%;*/
+    /*padding-left: 5px;*/
 }
