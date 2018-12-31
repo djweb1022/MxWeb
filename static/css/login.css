@@ -55,9 +55,10 @@ a:hover{
     height:68px;
     line-height:68px;
     margin-bottom:15px;
+    /*padding-bottom: 10px;*/
     padding-top:32px;
-    padding-left:190px;
-    background:url(../images/logo.png) no-repeat 0 center;
+    padding-left:230px;
+    /*background:url(../images/footlogo.png) no-repeat 0 center;*/
 }
 .index-logo{
     position:absolute;
@@ -65,14 +66,15 @@ a:hover{
     top:0;
     display:block;
     width:190px;
-    height:100px;
+    height:50px;
     cursor: pointer;
 }
 .hd-login > h1{
     float:left;
     color:#fff;
-    font-size:30px;
+    font-size:40px;
     font-weight: normal;
+    /*padding-bottom: 5px;*/
 }
 .index-font{
     float:right;
@@ -429,6 +431,11 @@ a:hover{
     border-radius:3px;
     position: relative;
 }
+
+.logoimage{
+    padding-top: 20px;
+}
+
 .successbox .cont .fl{margin:10px;}
 .successbox .cont{background:url(../images/check2.png) no-repeat 0 center;display: table;width:auto;height: 199px;padding:0;}
 .failbox .cont{background:url(../images/check4.png) no-repeat 0 center!important;}

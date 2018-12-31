@@ -66,9 +66,9 @@
 <header>
     <div class="c-box fff-box">
         <div class="wp header-box">
-            <p class="fl hd-tips">MYMOOC在线，在线学习平台！</p>
+            <p class="fl hd-tips">MYMOOC在线网，你的专属在线学习平台！</p>
             <ul class="fr hd-bar">
-                <li>服务电话：<span>4001008031</span></li>
+                <li>服务电话：<span>88888888</span></li>
                 <li><a href="{% url 'login' %}">[登录]</a></li>
                 <li class="active"><a href="{% url 'register' %}">[注册]</a></li>
             </ul>
@@ -79,7 +79,9 @@
     <div class="c-box bg-box">
         <div class="login-box clearfix">
             <div class="hd-login clearfix">
-                <a class="index-logo" href="{% url 'index' %}"></a>
+                <a class="index-logo" href="{% url 'index' %}">
+                    <img height="90" class="logoimage" src="{% static 'images/footlogo.png' %}">
+                </a>
                 <h1>用户注册</h1>
                 <a class="index-font" href="{% url 'index' %}">回到首页</a>
             </div>
@@ -87,11 +89,11 @@
                 <div class="imgslide">
                     <ul class="imgs">
 
-                        <li><a href=""><img width="483" height="472" src="{% static 'images/57a801860001c34b12000460.jpg' %}" /></a></li>
+                        <li><a href=""><img width="483" height="472" src="{% static 'images/welcome_register1.png' %}" /></a></li>
 
-                        <li><a href=""><img width="483" height="472" src="{% static 'images/57a801860001c34b12000460.jpg' %}" /></a></li>
+                        <li><a href=""><img width="483" height="472" src="{% static 'images/welcome_register2.png' %}" /></a></li>
 
-                        <li><a href=""><img width="483" height="472" src="{% static 'images/57a801860001c34b12000460.jpg' %}" /></a></li>
+                        <li><a href=""><img width="483" height="472" src="{% static 'images/welcome_register3.png' %}" /></a></li>
 
                     </ul>
                 </div>
