@@ -1747,7 +1747,7 @@ textarea:focus {
 .feature {
     height: 125px;
     border: 1px solid #ccc;
-    margin: 30px 0;
+    margin: 15px 0;
 }
 
 .feature li {
@@ -1793,7 +1793,10 @@ textarea:focus {
 .module {
     clear: both;
     width: 100%;
-    height: auto;
+    /*padding: 30px 0;*/
+    padding-top: 30px;
+    padding-bottom: 15px;
+    /*height: auto;*/
     overflow: hidden;
 }
 
@@ -1803,7 +1806,8 @@ textarea:focus {
 }
 
 .module .eachmod {
-    margin: 30px 0;
+    /*margin: 30px 0;*/
+    margin-top: 30px;
 }
 
 .module .box {
@@ -1831,7 +1835,8 @@ textarea:focus {
 
 .module .right {
     width: 962px;
-    height: 100%;
+    /*height: 100%;*/
+    padding-bottom: 0px;
     float: right
 }
 
@@ -1874,7 +1879,8 @@ textarea:focus {
 }
 
 .module1 {
-    height: 614px;
+    /*height: 614px;*/
+    padding-bottom: 0px;
 }
 
 .module1 .left.box {
@@ -1882,7 +1888,7 @@ textarea:focus {
 }
 
 .group_list .box {
-    height: 300px;
+    height: 265px;
     border: 1px solid #ccc;
     width: 233px;
     float: left;
@@ -1922,14 +1928,16 @@ textarea:focus {
 
 .group_list .des .fl {
     left: 0;
+    bottom: 8px;
 }
 
 .group_list .des .fr {
     right: 0;
+    bottom: 8px;
 }
 
 .group_list .des h2 {
-    line-height: 50px;
+    line-height: 45px;
     font-size: 18px;
     overflow: hidden;
     color: #434343;
@@ -2007,7 +2015,7 @@ textarea:focus {
 }
 
 .module1_2 img {
-    height: 100% !important;
+    height: 120% !important;
 }
 
 .module1_3, .module1_5, .module1_6, .module1_7 {
@@ -2135,7 +2143,7 @@ textarea:focus {
     height: 140px;
     float: left;
     margin-right: 10px;
-    margin-bottom: 20px;
+    /*margin-bottom: 20px;*/
 }
 
 .module3 li p {

@@ -66,7 +66,8 @@ class CourseDetailView(View):
 
         tag = course.tag
         if tag:
-            relate_courses = Course.objects.filter(tag=tag)[:1]
+            """随机选取标签相同的3个课程"""
+            relate_courses = Course.objects.filter(tag=tag).order_by('?')[:3]
         else:
             relate_courses = []
         return render(request, 'course-detail.html', {
@@ -96,7 +97,7 @@ class CourseInfoView(LoginRequiredMixIn, View):
         user_courses = UserCourse.objects.filter(course=course)  # 获取“用户课程”表里面该课程的所有记录
         user_ids = [user_course.user.id for user_course in user_courses]  # 获取学过该课程的所有用户id
         all_user_courses = UserCourse.objects.filter(user_id__in=user_ids)  # 获取这些用户学过的课程记录
-        course_ids = [user_course.id for user_course in all_user_courses]  # 获取这些课程的id
+        course_ids = [user_course.course_id for user_course in all_user_courses]  # 获取这些课程的id
         relate_courses = Course.objects.filter(id__in=course_ids).order_by('-click_nums')[:5]  # 根据点击量取出5个
 
         all_resources = CourseResource.objects.filter(course=course)
@@ -167,7 +168,7 @@ class VideoPlayView(View):
         user_courses = UserCourse.objects.filter(course=course)  # 获取“用户课程”表里面该课程的所有记录
         user_ids = [user_course.user.id for user_course in user_courses]  # 获取学过该课程的所有用户id
         all_user_courses = UserCourse.objects.filter(user_id__in=user_ids)  # 获取这些用户学过的课程记录
-        course_ids = [user_course.id for user_course in all_user_courses]  # 获取这些课程的id
+        course_ids = [user_course.course_id for user_course in all_user_courses]  # 获取这些课程的id
         relate_courses = Course.objects.filter(id__in=course_ids).order_by('-click_nums')[:5]  # 根据点击量取出5个
 
         return render(request, 'course-play.html', {
