@@ -21,8 +21,7 @@ class CourseListView(View):
         search_keywords = request.GET.get('keywords', '')
         if search_keywords:
             all_courses = Course.objects.filter(Q(name__icontains=search_keywords) |
-                                                Q(desc__icontains=search_keywords) |
-                                                Q(detail__icontains=search_keywords))
+                                                Q(desc__icontains=search_keywords))
 
         # 统计课程数
         all_courses_nums = all_courses.count()
