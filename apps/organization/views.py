@@ -82,6 +82,7 @@ class OrgView(View):
             'category': category,
             'hot_orgs': hot_orgs,
             'sort': sort,
+            'keywords': search_keywords,
         })
 
 
@@ -300,6 +301,7 @@ class TeacherListView(View):
             'sorted_teachers': sorted_teachers,
             'sort': sort,
             'teacher_nums': teacher_nums,
+            'keywords': search_keywords
         })
 
 

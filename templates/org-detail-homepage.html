@@ -13,7 +13,7 @@
                     <div class="des">
                         <a href="{% url 'course:course_detail' course.id %}"><h2>{{ course.name }}</h2></a>
                         <span class="fl">课时：<i class="key">{{ course.learn_times }}</i></span>
-                        <span class="fr">参加人数：{{ course.students }}</span>
+                        <span class="fr">学习人数：{{ course.students }}</span>
                     </div>
                     <div class="bottom">
                         <span class="fl">{{ course.course_org.name }}</span>

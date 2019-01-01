@@ -24,6 +24,9 @@ class CourseListView(View):
                                                 Q(desc__icontains=search_keywords) |
                                                 Q(detail__icontains=search_keywords))
 
+        # 统计课程数
+        all_courses_nums = all_courses.count()
+
         # 课程排序
         sort = request.GET.get('sort', '')
         if sort:
@@ -44,6 +47,8 @@ class CourseListView(View):
             'all_courses': courses,
             'sort': sort,
             'hot_courses': hot_courses,
+            'all_courses_nums': all_courses_nums,
+            'keywords': search_keywords,
         })
 
 

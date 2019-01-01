@@ -2701,6 +2701,7 @@ footer .footer .line {
     height: 50px;
     line-height: 50px;
     text-indent: 0;
+    border: 1px solid #eaeaea;
 }
 
 .tab_header li {
@@ -5299,6 +5300,7 @@ footer .footer .line {
     width: 96%;
     padding: 2%;
     color: #858484;
+    line-height: 30px;
 }
 
 .companycenter .diarys li {
