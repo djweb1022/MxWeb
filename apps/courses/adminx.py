@@ -8,9 +8,16 @@ from .models import Course, Lesson, Video, CourseResource
 
 
 class CourseAdmin(object):
-    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
+    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'click_nums']
     search_fields = ['name', 'desc', 'detail', 'degree', 'students']
     list_filter = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
+    ordering = ['-click_nums']
+
+    # 设置为只读，数据不可更改
+    # readonly_fields = ['click_nums']
+
+    # 设置为不可见
+    # exclude = ['click_nums']
 
 
 class LessonAdmin(object):
