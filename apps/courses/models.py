@@ -37,6 +37,15 @@ class Course(models.Model):
         return self.lesson_set.all().count()
         # 外键反向查找
 
+    # 在后台抬头显示名称
+    get_zj_nums.short_description = '章节数'
+
+    # 添加跳转列
+    def go_to(self):
+        from django.utils.safestring import mark_safe
+        return mark_safe("<a href='https://www.baidu.com/'>跳转</>")
+    go_to.short_description = '跳转'
+
     def get_learn_users(self):
         return self.usercourse_set.all()[:5]
         # 外键反向查找

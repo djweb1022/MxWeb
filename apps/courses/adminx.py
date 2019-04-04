@@ -18,7 +18,7 @@ class CourseResourceInline(object):
 
 
 class CourseAdmin(object):
-    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'click_nums']
+    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'click_nums', 'get_zj_nums']
     search_fields = ['name', 'desc', 'detail', 'degree', 'students']
     list_filter = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
     ordering = ['-click_nums']
@@ -26,21 +26,37 @@ class CourseAdmin(object):
     # 将添加课程与添加章节、添加课程资源放在同一页面
     inlines = [LessonInline, CourseResourceInline]
 
+    # 直接在列表页添加修改功能
+    list_editable = ['degree', 'desc']
+
     # 设置为只读，数据不可更改
     # readonly_fields = ['click_nums']
 
     # 设置为不可见
     # exclude = ['click_nums']
 
+    # 设置自动刷新时间
+    refresh_times = [3, 5]
+
+    # 运用重载仅显示非轮播课程数据
     def queryset(self):
         qs = super(CourseAdmin, self).queryset()
         qs = qs.filter(is_banner=False)
         return qs
 
+    def save_models(self):
+        # 重载save_models，在保存课程的时候统计机构课程的课程数
+        obj = self.new_obj
+        obj.save()
+        if obj.course_org is not None:
+            course_org = obj.course_org
+            course_org.course_nums = Course.objects.filter(course_org=course_org).count()
+            course_org.save()
+
 
 # 格式和CourseAdmin相同
 class BannerCourseAdmin(object):
-    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'click_nums']
+    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'click_nums', 'get_zj_nums']
     search_fields = ['name', 'desc', 'detail', 'degree', 'students']
     list_filter = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
     ordering = ['-click_nums']
