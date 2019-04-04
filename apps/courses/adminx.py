@@ -56,6 +56,15 @@ class CourseAdmin(object):
             course_org.course_nums = Course.objects.filter(course_org=course_org).count()
             course_org.save()
 
+    # 开启excel导入功能
+    import_excel = True
+
+    def post(self, request, *args, **kwargs):
+        if 'excel' in request.FILES:
+            pass
+        # 必须返回，不然报错（或者注释掉）
+        return super(CourseAdmin, self).post(request, *args, **kwargs)
+
 
 # 格式和CourseAdmin相同
 class BannerCourseAdmin(object):
@@ -67,6 +76,7 @@ class BannerCourseAdmin(object):
 
     # 使用ueditor
     style_fields = {'detail': 'ueditor'}
+
 
 # 运用重载仅显示轮播课程数据
     def queryset(self):

@@ -6,12 +6,12 @@ $(function() {
 
 	/*banner imgslide*/
     var unslider = $('.imgslide').unslider({
-		speed: 500,               //  The speed to animate each slide (in milliseconds)
-		delay: 5000,              //  The delay between slide animations (in milliseconds)
+		speed: 1000,               //  The speed to animate each slide (in milliseconds)
+		delay: 3500,              //  The delay between slide animations (in milliseconds)
 		complete: function() {},  //  A function that gets called after every slide animation
 		keys: true,               //  Enable keyboard (left, right) arrow shortcuts
 		dots: true,               //  Display dot navigation
-		fluid: false              //  Support responsive design. May break non-responsive designs
+		fluid: true              //  Support responsive design. May break non-responsive designs
 	});
     $('.unslider-arrow').click(function() {
         var fn = this.className.split(' ')[1];
@@ -19,11 +19,12 @@ $(function() {
     });
 
     var unslider2 = $('.imgslide2').unslider({
-		speed: 500,              
+		speed: 600,
+		delay: 3000,
 		complete: function() {},  
-		keys: true,               
-		dots: false,              
-		fluid: false             
+		keys: false,
+		dots: false,
+		fluid: true
 	});
     $('.unslider-arrow2').click(function() {
         var fn = this.className.split(' ')[1];
