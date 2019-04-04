@@ -13,9 +13,7 @@ class Course(models.Model):
     course_org = models.ForeignKey(CourseOrg, verbose_name=u'课程机构', null=True, blank=True)
     name = models.CharField(max_length=50, verbose_name=u'课程名')
     desc = models.CharField(max_length=300, verbose_name=u'课程描述')
-    detail = UEditorField(verbose_name=u'课程详情', height=100, width=500, default='', imagePath="courses/ueditor/",
-                           imageManagerPath="imglib", toolbars='mini', options={"elementPathEnabled": True},
-                           filePath='courses/ueditor/', blank=True)
+    detail = UEditorField(verbose_name=u'课程详情', height=250, width=1300, default='', imagePath="courses/ueditor/", filePath='courses/ueditor/')
     # detail = models.TextField(verbose_name=u'课程详情')
     is_banner = models.BooleanField(default=False, verbose_name=u'是否轮播')
     teacher = models.ForeignKey(Teacher, verbose_name=u'讲师', null=True, blank=True)
