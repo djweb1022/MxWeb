@@ -1,7 +1,7 @@
 from django import forms
 from django.apps import apps
 from django.core.exceptions import PermissionDenied
-from django.urls.base import reverse, NoReverseMatch
+from django.core.urlresolvers import reverse, NoReverseMatch
 from django.template.context_processors import csrf
 from django.db.models.base import ModelBase
 from django.forms.forms import DeclarativeFieldsMetaclass
@@ -23,7 +23,7 @@ from xadmin.sites import site
 from xadmin.views.base import CommAdminView, ModelAdminView, filter_hook, csrf_protect_m
 from xadmin.views.edit import CreateAdminView
 from xadmin.views.list import ListAdminView
-from xadmin.util import unquote
+from xadmin.util import unquote, DJANGO_11
 import copy
 
 
@@ -36,7 +36,10 @@ class WidgetTypeSelect(forms.Widget):
     def render(self, name, value, attrs=None):
         if value is None:
             value = ''
-        final_attrs = self.build_attrs(attrs, extra_attrs={'name': name})
+        if DJANGO_11:
+            final_attrs = self.build_attrs(attrs, extra_attrs={'name': name})
+        else:
+            final_attrs = self.build_attrs(attrs, name=name)
         final_attrs['class'] = 'nav nav-pills nav-stacked'
         output = [u'<ul%s>' % flatatt(final_attrs)]
         options = self.render_options(force_text(value), final_attrs['id'])
@@ -262,7 +265,6 @@ class HtmlWidget(BaseWidget):
 
 
 class ModelChoiceIterator(object):
-
     def __init__(self, field):
         self.field = field
 
@@ -275,11 +277,12 @@ class ModelChoiceIterator(object):
 
 class ModelChoiceField(forms.ChoiceField):
 
-    def __init__(self, *, required=True, widget=None, label=None, initial=None,
-                 help_text=None, **kwargs):
+    def __init__(self, required=True, widget=None, label=None, initial=None,
+                 help_text=None, *args, **kwargs):
         # Call Field instead of ChoiceField __init__() because we don't need
         # ChoiceField.__init__().
-        forms.Field.__init__(self, **kwargs)
+        forms.Field.__init__(self, required, widget, label, initial, help_text,
+                             *args, **kwargs)
         self.widget.choices = self.choices
 
     def __deepcopy__(self, memo):
@@ -508,7 +511,6 @@ class Dashboard(CommAdminView):
             wid = widget_manager.get(widget.widget_type)
 
             class widget_with_perm(wid):
-
                 def context(self, context):
                     super(widget_with_perm, self).context(context)
                     context.update({'has_change_permission': self.request.user.has_perm('xadmin.change_userwidget')})

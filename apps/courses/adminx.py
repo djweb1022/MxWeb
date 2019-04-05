@@ -17,6 +17,11 @@ class CourseResourceInline(object):
     extra = 0
 
 
+class VideoInline(object):
+    model = Video
+    extra = 0
+
+
 class CourseAdmin(object):
     list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'click_nums', 'get_zj_nums']
     search_fields = ['name', 'desc', 'detail', 'degree', 'students']
@@ -89,6 +94,7 @@ class LessonAdmin(object):
     list_display = ['course', 'name', 'add_time']
     search_fields = ['course', 'name']
     list_filter = ['course__name', 'name', 'add_time']
+    inlines = [VideoInline]
 
 
 class VideoAdmin(object):

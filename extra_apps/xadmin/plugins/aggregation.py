@@ -1,6 +1,5 @@
 from django.db.models import FieldDoesNotExist, Avg, Max, Min, Count, Sum
 from django.utils.translation import ugettext as _
-from django.forms import Media
 
 from xadmin.sites import site
 from xadmin.views import BaseAdminPlugin, ListAdminView
@@ -62,7 +61,9 @@ class AggregationPlugin(BaseAdminPlugin):
 
     # Media
     def get_media(self, media):
-        return media + Media(css={'screen': [self.static('xadmin/css/xadmin.plugin.aggregation.css'), ]})
+        media.add_css({'screen': [self.static(
+            'xadmin/css/xadmin.plugin.aggregation.css'), ]})
+        return media
 
 
 site.register_plugin(AggregationPlugin, ListAdminView)
