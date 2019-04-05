@@ -68,10 +68,10 @@ class CourseDetailView(View):
             if UserFavorite.objects.filter(user=request.user, fav_id=int(course.course_org.id), fav_type=2):
                 has_fav_org = True
 
-        tag = course.tag
-        if tag:
+        category = course.category
+        if category:
             """随机选取标签相同的3个课程"""
-            relate_courses = Course.objects.filter(tag=tag).order_by('?')[:3]
+            relate_courses = Course.objects.filter(category=category).order_by('?')[:3]
         else:
             relate_courses = []
         return render(request, 'course-detail.html', {
