@@ -14,6 +14,7 @@ class SetLangNavPlugin(BaseAdminPlugin):
         context['redirect_to'] = self.request.get_full_path()
         nodes.append(loader.render_to_string('xadmin/blocks/comm.top.setlang.html', context=context))
 
+
 class SetLangView(BaseAdminView):
 
     def post(self, request, *args, **kwargs):
