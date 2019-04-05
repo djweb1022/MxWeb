@@ -52,7 +52,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'captcha',
     'pure_pagination',
-    'DjangoUeditor',
+    # 'DjangoUeditor',
 ]
 AUTH_USER_MODEL = 'users.UserProfile'
 

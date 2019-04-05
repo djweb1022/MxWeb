@@ -32,6 +32,7 @@ class CustomBackend(ModelBackend):
 
 
 class ActiveUserView(View):
+    """用户激活"""
     def get(self, request, active_code):
         all_records = EmailVerifyRecord.objects.filter(code=active_code)
         if all_records:

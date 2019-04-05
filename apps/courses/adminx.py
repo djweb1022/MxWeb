@@ -24,7 +24,7 @@ class CourseAdmin(object):
     ordering = ['-click_nums']
 
     # 使用ueditor
-    style_fields = {'detail': 'ueditor'}
+    # style_fields = {'detail': 'ueditor'}
 
     # 将添加课程与添加章节、添加课程资源放在同一页面
     inlines = [LessonInline, CourseResourceInline]
@@ -75,7 +75,7 @@ class BannerCourseAdmin(object):
     inlines = [LessonInline, CourseResourceInline]
 
     # 使用ueditor
-    style_fields = {'detail': 'ueditor'}
+    # style_fields = {'detail': 'ueditor'}
 
 
 # 运用重载仅显示轮播课程数据
