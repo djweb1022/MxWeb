@@ -62,13 +62,13 @@ class CourseAdmin(object):
             course_org.save()
 
     # 开启excel导入功能
-    import_excel = True
-
-    def post(self, request, *args, **kwargs):
-        if 'excel' in request.FILES:
-            pass
-        # 必须返回，不然报错（或者注释掉）
-        return super(CourseAdmin, self).post(request, *args, **kwargs)
+    # import_excel = True
+    #
+    # def post(self, request, *args, **kwargs):
+    #     if 'excel' in request.FILES:
+    #         pass
+    #     # 必须返回，不然报错（或者注释掉）
+    #     return super(CourseAdmin, self).post(request, *args, **kwargs)
 
 
 # 格式和CourseAdmin相同
@@ -95,6 +95,7 @@ class LessonAdmin(object):
     search_fields = ['course', 'name']
     list_filter = ['course__name', 'name', 'add_time']
     inlines = [VideoInline]
+    # model_icon = 'fa fa-envelope'
 
 
 class VideoAdmin(object):
