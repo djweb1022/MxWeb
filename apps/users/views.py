@@ -8,7 +8,7 @@ from django.views.generic import View
 from django.contrib.auth.hashers import make_password
 from django.http import HttpResponse, HttpResponseRedirect
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
-from django.urls import reverse
+from django.core.urlresolvers import reverse
 
 from .models import UserProfile, EmailVerifyRecord, Banner
 from operation.models import UserCourse, UserFavorite, UserMessage
