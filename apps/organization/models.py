@@ -16,7 +16,7 @@ class CityDict(models.Model):
         verbose_name = u'城市'
         verbose_name_plural = verbose_name
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -29,7 +29,7 @@ class CourseOrg(models.Model):
     fav_nums = models.IntegerField(default=0, verbose_name=u'收藏数')
     image = models.ImageField(upload_to='org/%Y/%m', verbose_name=u'logo', max_length=100)
     address = models.CharField(max_length=150, verbose_name=u'机构地址')
-    city = models.ForeignKey(CityDict, verbose_name=u'所在城市')
+    city = models.ForeignKey(CityDict, verbose_name=u'所在城市', on_delete=models.CASCADE)
     students = models.IntegerField(default=0, verbose_name=u'学习人数')
     course_nums = models.IntegerField(default=0, verbose_name=u'课程数')
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
@@ -51,12 +51,12 @@ class CourseOrg(models.Model):
         self.course_set.all()
         return self.course_set.all().count()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
 class Teacher(models.Model):
-    org = models.ForeignKey(CourseOrg, verbose_name=u'所属机构')
+    org = models.ForeignKey(CourseOrg, verbose_name=u'所属机构', on_delete=models.CASCADE)
     name = models.CharField(max_length=50, verbose_name=u'教师名')
     work_years = models.IntegerField(default=0, verbose_name=u'工作年限')
     work_company = models.CharField(max_length=50, verbose_name=u'就职公司')
@@ -72,7 +72,7 @@ class Teacher(models.Model):
         verbose_name = u'教师'
         verbose_name_plural = verbose_name
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_course_nums(self):
