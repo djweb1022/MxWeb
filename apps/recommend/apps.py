@@ -6,4 +6,4 @@ from django.apps import AppConfig
 
 class RecommendConfig(AppConfig):
     name = 'recommend'
-    verbose_name = u'推荐系统'
+    verbose_name = u'5-推荐系统'
