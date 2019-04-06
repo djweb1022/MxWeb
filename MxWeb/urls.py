@@ -44,10 +44,10 @@ urlpatterns = [
     url(r'^modify_pwd/$', ModifyPwdView.as_view(), name='modify_pwd'),
 
     # 课程机构url配置
-    url(r'^org/', include(('organization.urls', 'organization'), namespace='org')),
+    url(r'^org/', include('organization.urls', namespace='org')),
 
     # 课程相关url配置
-    url(r'^course/', include(('courses.urls', 'courses'), namespace='course')),
+    url(r'^course/', include('courses.urls', namespace='course')),
 
     # 配置上传文件的访问处理函数
     url(r'^media/(?P<path>.*)/$', serve, {'document_root': MEDIA_ROOT}),
@@ -56,7 +56,10 @@ urlpatterns = [
     # url(r'^static/(?P<path>.*)/$', serve, {'document_root': STATIC_ROOT}),
 
     # 用户相关url配置
-    url(r'^users/', include(('users.urls', 'users'), namespace='users')),
+    url(r'^users/', include('users.urls', namespace='users')),
+
+    # 推荐系统url配置
+    url(r'^recommend/', include('recommend.urls', namespace='recommend')),
 
     # 富文本相关url
     # url(r'^ueditor/', include('DjangoUeditor.urls')),
