@@ -2891,9 +2891,23 @@ footer .footer .line {
     position: relative;
     z-index: 1;
     width: 100%;
-    height: 365px;
+    height: 300px;
     overflow: hidden;
 }
+
+.tb-star {
+    margin-top: 6px;
+    padding: 20px 0px 0px 100px;
+    background: #ffffff;
+    position: relative;
+    z-index: 1;
+    width: auto;
+    height: 100px;
+    overflow: hidden;
+}
+
+.spanno2{
+    margin-top: 6px;}
 
 .tb-pic a {
     text-align: center;
@@ -3043,7 +3057,7 @@ footer .footer .line {
 
 .groupPurchase_detail .toppro .parameter .word4 {
     letter-spacing: 1px;
-    margin-top: 20px;
+    margin-top: 7px;
 }
 
 .groupPurchase_detail .toppro .parameter .word3 {
@@ -3069,7 +3083,7 @@ footer .footer .line {
     height: 40px;
     overflow: hidden;
     display: block;
-    margin-top: 15px;
+    margin-top: 0px;
     margin-right: 5px;
 }
 
