@@ -26,6 +26,8 @@ class CourseAdmin(object):
     list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students', 'click_nums', 'get_zj_nums']
     search_fields = ['name', 'desc', 'detail', 'degree', 'students']
     list_filter = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
+
+    # 默认按点击数排序
     ordering = ['-click_nums']
 
     # 使用ueditor
@@ -42,6 +44,12 @@ class CourseAdmin(object):
 
     # 设置为不可见
     # exclude = ['click_nums']
+
+    # 启用外键搜索模式
+    # relfield_style = 'fk-ajax'
+
+    # 启用外键选择模式
+    # relfield_style = 'fk-select'
 
     # 设置自动刷新时间
     refresh_times = [3, 5]

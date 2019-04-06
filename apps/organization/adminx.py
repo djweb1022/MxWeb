@@ -19,8 +19,11 @@ class CourseOrgAdmin(object):
     search_fields = ['name', 'desc', 'click_nums', 'fav_nums']
     list_filter = ['name', 'desc', 'click_nums', 'fav_nums']
 
-    # 目前无效
-    # relfield_style = 'fk_ajax'
+    # 启用外键搜索模式
+    # relfield_style = 'fk-ajax'
+
+    # 启用外键选择模式
+    # relfield_style = 'fk-select'
 
 
 class TeacherAdmin(object):
