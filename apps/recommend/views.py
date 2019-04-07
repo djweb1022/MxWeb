@@ -22,7 +22,7 @@ class AddRating(View):
 
         course = Course.objects.get(id=int(rating_id))
 
-        if not request.user.is_authenticated:
+        if not request.user.is_authenticated():
             # 判断用户登录状态
             return HttpResponse('{"status":"fail", "msg":"用户未登录"}', content_type='application/json')
 
