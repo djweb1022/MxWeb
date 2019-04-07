@@ -4,7 +4,7 @@ __date__ = '2019/4/6 10:59'
 
 import xadmin
 
-from .models import UserRating
+from .models import UserRating, WatchingTime
 
 
 class UserRatingAdmin(object):
@@ -23,4 +23,11 @@ class UserRatingAdmin(object):
         obj.save()
 
 
+class WatchingTimeAdmin(object):
+    list_display = ['id_int_user', 'id_int_course', 'user', 'course', 'time', 'add_time']
+    search_fields = ['id_int_user', 'id_int_course', 'user', 'course', 'time']
+    list_filter = ['id_int_user', 'id_int_course', 'user', 'course', 'time', 'add_time']
+
+
 xadmin.site.register(UserRating, UserRatingAdmin)
+xadmin.site.register(WatchingTime, WatchingTimeAdmin)
