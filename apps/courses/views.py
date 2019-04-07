@@ -7,6 +7,7 @@ from django.db.models import Q
 
 from .models import Course, CourseResource, Video
 from operation.models import UserFavorite, CourseComments, UserCourse
+from recommend.models import UserRating
 from utils.mixin_utils import LoginRequiredMixIn
 
 # Create your views here.
@@ -59,14 +60,23 @@ class CourseDetailView(View):
         course.click_nums += 1
         course.save()
 
+        # 用户未登录时，收藏、评分状态置为False
         has_fav_course = False
         has_fav_org = False
+        has_rating = False
+        rating_value = 0
 
+        # 用户登录后，判断收藏、评分状态
         if request.user.is_authenticated:
             if UserFavorite.objects.filter(user=request.user, fav_id=int(course.id), fav_type=1):
                 has_fav_course = True
             if UserFavorite.objects.filter(user=request.user, fav_id=int(course.course_org.id), fav_type=2):
                 has_fav_org = True
+            if UserRating.objects.filter(user=request.user, course=int(course.id)):
+                # 若有评分记录，则获得分数，记为rating_value
+                has_rating = True
+                user_rating = UserRating.objects.get(user=request.user, course=course)
+                rating_value = user_rating.rating
 
         category = course.category
         if category:
@@ -79,6 +89,8 @@ class CourseDetailView(View):
             'relate_courses': relate_courses,
             'has_fav_course': has_fav_course,
             'has_fav_org': has_fav_org,
+            'has_rating': has_rating,
+            'rating_value': rating_value,
         })
 
 

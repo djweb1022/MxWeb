@@ -7,6 +7,8 @@ from courses.models import Course
 
 
 class UserRating(models.Model):
+    id_int_user = models.IntegerField(default=0, verbose_name=u'用户ID')
+    id_int_course = models.IntegerField(default=0, verbose_name=u'课程ID')
     user = models.ForeignKey(UserProfile, verbose_name=u'用户', on_delete=models.CASCADE)
     course = models.ForeignKey(Course, verbose_name=u'课程', on_delete=models.CASCADE)
     rating = models.IntegerField(default=0, verbose_name=u'用户评分')

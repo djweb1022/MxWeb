@@ -8,9 +8,9 @@ from .models import UserRating
 
 
 class UserRatingAdmin(object):
-    list_display = ['user', 'course', 'rating', 'add_time']
-    search_fields = ['user', 'course', 'rating']
-    list_filter = ['user', 'course', 'rating', 'add_time']
+    list_display = ['id_int_user', 'id_int_course', 'user', 'course', 'rating', 'add_time']
+    search_fields = ['id_int_user', 'id_int_course', 'user', 'course', 'rating']
+    list_filter = ['id_int_user', 'id_int_course', 'user', 'course', 'rating', 'add_time']
 
 
 xadmin.site.register(UserRating, UserRatingAdmin)

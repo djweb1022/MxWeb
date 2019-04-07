@@ -48,11 +48,11 @@
                             <div id="star">
                             <span>js星级评论打分</span>
                                 <ul>
-                                    <li><a href="javascript:;">1</a></li>
-                                    <li><a href="javascript:;">2</a></li>
-                                    <li><a href="javascript:;">3</a></li>
-                                    <li><a href="javascript:;">4</a></li>
-                                    <li><a href="javascript:;">5</a></li>
+                                    <li id="jsrate1"><a href="javascript:;">1</a></li>
+                                    <li id="jsrate2"><a href="javascript:;">2</a></li>
+                                    <li id="jsrate3"><a href="javascript:;">3</a></li>
+                                    <li id="jsrate4"><a href="javascript:;">4</a></li>
+                                    <li id="jsrate5"><a href="javascript:;">5</a></li>
                                 </ul>
                             <div id="star2"><span></span></div>
                             <p></p>
@@ -184,7 +184,7 @@
 {% endblock %}
 {% block custom_js %}
     <script type="text/javascript">
-        //收藏分享
+    //收藏
     function add_fav(current_elem, fav_id, fav_type){
         $.ajax({
             cache: false,
@@ -273,6 +273,53 @@ window.onload = function (){
 	}
 
 };
+
+    //保存评分
+    function add_rating(current_elem, rating_id, rating_value){
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url:"{% url 'recommend:add_rating' %}",
+            data:{'rating_id':rating_id, 'rating_value':rating_value},
+            async: true,
+            beforeSend:function(xhr, settings){
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            },
+            success: function(data) {
+                if(data.status == 'fail'){
+                    if(data.msg == '用户未登录'){
+                        window.location.href="{% url 'login' %}";
+                    }else{
+                        alert(data.msg)
+                    }
+
+                }else if(data.status == 'success'){
+                    current_elem.text(data.msg)
+                }
+            },
+        });
+    }
+
+    $('#jsrate1').on('click', function(){
+        add_rating($(this), {{ course.id }}, 1);
+    });
+
+    $('#jsrate2').on('click', function(){
+        add_rating($(this), {{ course.id }}, 2);
+    });
+
+    $('#jsrate3').on('click', function(){
+        add_rating($(this), {{ course.id }}, 3);
+    });
+
+    $('#jsrate4').on('click', function(){
+        add_rating($(this), {{ course.id }}, 4);
+    });
+
+    $('#jsrate5').on('click', function(){
+        add_rating($(this), {{ course.id }}, 5);
+    });
+
 </script>
 
 {% endblock %}
