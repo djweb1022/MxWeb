@@ -72,7 +72,7 @@ class CourseDetailView(View):
                 has_fav_course = True
             if UserFavorite.objects.filter(user=request.user, fav_id=int(course.course_org.id), fav_type=2):
                 has_fav_org = True
-            if UserRating.objects.filter(user=request.user, course=int(course.id)):
+            if UserRating.objects.filter(user=request.user, course=course):
                 # 若有评分记录，则获得分数，记为rating_value
                 has_rating = True
                 user_rating = UserRating.objects.get(user=request.user, course=course)
