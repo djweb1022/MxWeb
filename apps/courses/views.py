@@ -7,7 +7,7 @@ from django.db.models import Q
 
 from .models import Course, CourseResource, Video
 from operation.models import UserFavorite, CourseComments, UserCourse
-from recommend.models import UserRating
+from recommend.models import UserRating, WatchingTime
 from utils.mixin_utils import LoginRequiredMixIn
 
 # Create your views here.
@@ -170,6 +170,7 @@ class AddCommentView(View):
 class VideoPlayView(View):
     def get(self, request, video_id):
         video = Video.objects.get(id=video_id)
+        lesson = video.lesson
         course = video.lesson.course
         all_resource = CourseResource.objects.filter(course=course)
 
@@ -179,6 +180,14 @@ class VideoPlayView(View):
             # 如果没有则写入数据库
             my_course = UserCourse(user=request.user, course=course)
             my_course.save()
+
+        # 观看记录保存测试
+        # watchingtime = WatchingTime()
+        # watchingtime.user = request.user
+        # watchingtime.course = course
+        # watchingtime.lesson = lesson
+        # watchingtime.video = video
+        # watchingtime.save()
 
         # 该同学还学过
         user_courses = UserCourse.objects.filter(course=course)  # 获取“用户课程”表里面该课程的所有记录

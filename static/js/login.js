@@ -80,7 +80,7 @@ function login_form_submit(){
         cache: false,
         type: 'post',
         dataType:'json',
-        url:"/user/login/",
+        url:"/login/",
         data:$('#jsLoginForm').serialize() + '&autologin='+autoLogin + '&' + arg[0] + '=' + arg[1],
         async: true,
         beforeSend:function(XMLHttpRequest){
