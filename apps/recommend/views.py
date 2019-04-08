@@ -71,3 +71,5 @@ class AddTime(View):
             watchingtime.time = timevalue
             watchingtime.save()
             return HttpResponse('{"status":"success", "value":"timevalue"}', content_type='application/json')
+        else:
+            return HttpResponse('{"status":"fail", "msg":"不保存"}', content_type='application/json')

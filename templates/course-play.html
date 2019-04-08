@@ -42,37 +42,46 @@
     var player = videojs('demo-video', options, function onPlayerReady() {
         var time1;
         var t1 = 0;
+        var tts = 0;
         function aa() {
-            t1 += 1.00;
+            t1 += 1;
             document.getElementById('aa').value = t1;
             console.log('aa-' + t1);
         }
         //开始播放视频时，设置一个定时器，每1000毫秒调用一次aa(),观看时长加1.0秒
         this.on('play', function () {
-            console.log('开始播放');
             time1 = setInterval(function () {
                 aa();
-            }, 1000)
+            }, 1000);
+            tts = 0;
+            console.log('开始播放 '+ 'tts:' + tts);
         });
         //结束和暂时时清除定时器，并向后台发送数据
         this.on('ended', function () {
-            console.log('结束播放');
             window.clearInterval(time1);
             {#countTime();   //向后台发数据#}
+            t1 = 0;
+            tts = 1;
+            console.log('结束播放 '+ 'tts:' + tts);
         });
         this.on('pause', function () {
-            console.log('暂停播放');
             window.clearInterval(time1);
-            {#countTime();  //向后台发数据#}
+            countTime();  //向后台发数据
+            t1 = 0;
+            tts = 1;
+            console.log('暂停播放 '+ 'tts:' + tts);
         });
     });
-    //直接关闭页面，并向后台发送数据
-    if(window.addEventListener){
-        window.addEventListener("beforeunload",countTime,false);
-    }else{
-        window.attachEvent("onbeforeunload",countTime);
+    //直接关闭页面，并向后台发送数据，加入变量tts防止重复保存
+    if(1){
+        console.log('执行关闭或刷新时的保存操作');
+        if(window.addEventListener){
+            window.addEventListener("beforeunload",countTime,false);
+        }else{
+            window.attachEvent("onbeforeunload",countTime);
+        }
     }
-})
+});
 
 function countTime() {
     var sTime = $("#aa").val();
@@ -87,6 +96,8 @@ function countTime() {
          },
         success:function (data) {
             if(data.status == 'success')
+            {console.log(data);}
+            if(data.status == 'fail')
             {console.log(data);}
         }
     })
