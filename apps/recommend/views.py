@@ -58,15 +58,16 @@ class AddTime(View):
         lesson = Lesson.objects.get(id=int(lesson_id))
         video = Video.objects.get(id=int(video_id))
 
-        watchingtime = WatchingTime()
-        watchingtime.id_int_user = request.user.id
-        watchingtime.id_int_course = course_id
-        watchingtime.id_int_lesson = lesson_id
-        watchingtime.id_int_video = video_id
-        watchingtime.user = request.user
-        watchingtime.course = course
-        watchingtime.lesson = lesson
-        watchingtime.video = video
-        watchingtime.time = timevalue
-        watchingtime.save()
-        return HttpResponse('{"status":"success", "value":"timevalue"}', content_type='application/json')
+        if int(course_id) > 0 and int(lesson_id) > 0 and int(video_id) > 0 and int(timevalue) >= 5:
+            watchingtime = WatchingTime()
+            watchingtime.id_int_user = request.user.id
+            watchingtime.id_int_course = course_id
+            watchingtime.id_int_lesson = lesson_id
+            watchingtime.id_int_video = video_id
+            watchingtime.user = request.user
+            watchingtime.course = course
+            watchingtime.lesson = lesson
+            watchingtime.video = video
+            watchingtime.time = timevalue
+            watchingtime.save()
+            return HttpResponse('{"status":"success", "value":"timevalue"}', content_type='application/json')
