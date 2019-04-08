@@ -5,8 +5,8 @@ from django.views.generic import View
 from pure_pagination import Paginator, EmptyPage, PageNotAnInteger
 from django.http import HttpResponse
 from django.db.models import Q
-from .models import UserRating
-from courses.models import Course
+from .models import UserRating, WatchingTime
+from courses.models import Course, Lesson, Video
 
 
 class InitialView(View):
@@ -42,3 +42,31 @@ class AddRating(View):
             return HttpResponse('{"status":"success", "msg":"已评分"}', content_type='application/json')
         else:
             return HttpResponse('{"status":"fail", "msg":"评分出错"}', content_type='application/json')
+
+
+class AddTime(View):
+    """用户观看时长"""
+    def post(self, request):
+        """通过ajax获得前端传来的数据"""
+        course_id = request.POST.get('course_id', 0)
+        lesson_id = request.POST.get('lesson_id', 0)
+        video_id = request.POST.get('video_id', 0)
+        timevalue = request.POST.get('sTime', 0)
+
+        """根据id进行实例化"""
+        course = Course.objects.get(id=int(course_id))
+        lesson = Lesson.objects.get(id=int(lesson_id))
+        video = Video.objects.get(id=int(video_id))
+
+        watchingtime = WatchingTime()
+        watchingtime.id_int_user = request.user.id
+        watchingtime.id_int_course = course_id
+        watchingtime.id_int_lesson = lesson_id
+        watchingtime.id_int_video = video_id
+        watchingtime.user = request.user
+        watchingtime.course = course
+        watchingtime.lesson = lesson
+        watchingtime.video = video
+        watchingtime.time = timevalue
+        watchingtime.save()
+        return HttpResponse('{"status":"success", "value":"timevalue"}', content_type='application/json')

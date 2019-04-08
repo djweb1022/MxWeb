@@ -34,13 +34,72 @@
 
 {% block custom_js %}
     <script src="{% static 'js/video.min.js' %}" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+    var options = {
+    };
+    var player = videojs('demo-video', options, function onPlayerReady() {
+        var time1;
+        var t1 = 0;
+        function aa() {
+            t1 += 1.00;
+            document.getElementById('aa').value = t1;
+            console.log('aa-' + t1);
+        }
+        //开始播放视频时，设置一个定时器，每1000毫秒调用一次aa(),观看时长加1.0秒
+        this.on('play', function () {
+            console.log('开始播放');
+            time1 = setInterval(function () {
+                aa();
+            }, 1000)
+        });
+        //结束和暂时时清除定时器，并向后台发送数据
+        this.on('ended', function () {
+            console.log('结束播放');
+            window.clearInterval(time1);
+            {#countTime();   //向后台发数据#}
+        });
+        this.on('pause', function () {
+            console.log('暂停播放');
+            window.clearInterval(time1);
+            {#countTime();  //向后台发数据#}
+        });
+    });
+    //直接关闭页面，并向后台发送数据
+    if(window.addEventListener){
+        window.addEventListener("beforeunload",countTime,false);
+    }else{
+        window.attachEvent("onbeforeunload",countTime);
+    }
+})
+
+function countTime() {
+    var sTime = $("#aa").val();
+    $.ajax({
+        url : "{% url 'recommend:add_time' %}",
+        type : "POST",
+        dataType : 'json',
+        data : {'sTime':sTime, 'course_id':{{ course.id }}, 'lesson_id':{{ lesson.id }}, 'video_id':{{ video.id }}},
+        async: true,
+        beforeSend:function(xhr, settings){
+        xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+         },
+        success:function (data) {
+            if(data.status == 'success')
+            {console.log(data);}
+        }
+    })
+}
+
+</script>
 {% endblock %}
 
 {% block content %}
     <div id="main">
 
     <div style="width:1200px;height:675px; margin-left: 340px">
-    <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" width="1200"
+    <video id="demo-video" class="video-js vjs-default-skin" controls preload="none" width="1200"
           poster="http://video-js.zencoder.com/oceans-clip.png"
           data-setup="{}">
         <source src="{{ video.url }}" type='video/mp4'>
@@ -56,6 +115,7 @@
                     <ul class="course-menu clearfix">
                         <li><a class="ui-tabs-active active" id="learnOn"  href="{% url 'course:course_info' course.id %}"><span>章节</span></a></li>
                         <li><a id="commentOn" class="" href="{% url 'course:course_comments' course.id %}"><span>评论</span></a></li>
+                        <li><input type="text" id="aa" value="0"> </li>
                     </ul>
                 </div>
 {#                <div id="notice" class="clearfix">#}
