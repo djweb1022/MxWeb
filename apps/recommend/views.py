@@ -58,7 +58,7 @@ class AddTime(View):
         lesson = Lesson.objects.get(id=int(lesson_id))
         video = Video.objects.get(id=int(video_id))
 
-        if int(course_id) > 0 and int(lesson_id) > 0 and int(video_id) > 0 and int(timevalue) >= 5:
+        if int(course_id) > 0 and int(lesson_id) > 0 and int(video_id) > 0 and int(timevalue) >= 0:
             watchingtime = WatchingTime()
             watchingtime.id_int_user = request.user.id
             watchingtime.id_int_course = course_id
