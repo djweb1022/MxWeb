@@ -117,7 +117,8 @@ function countTime() {
                     <ul class="course-menu clearfix">
                         <li><a class="ui-tabs-active active" id="learnOn"  href="{% url 'course:course_info' course.id %}"><span>章节</span></a></li>
                         <li><a id="commentOn" class="" href="{% url 'course:course_comments' course.id %}"><span>评论</span></a></li>
-                        <li><input type="text" id="aa" value="0"> </li>
+                        <div class="timesave-div"><input class="timesave-zh" type="text" value="计时:"/><input class="timesave" type="text" id="aa" value="0"/><input class="timesave-miao" type="text" value="秒"/>
+                        </div>
                     </ul>
                 </div>
 {#                <div id="notice" class="clearfix">#}
