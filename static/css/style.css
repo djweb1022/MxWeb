@@ -9184,3 +9184,44 @@ table .upload-btn {
     /*left: 50%;*/
     /*padding-left: 5px;*/
 }
+
+.course-infos-top{
+    height: 300px;
+    width: 100%;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.title-box{
+    width: 1000px;
+    margin: auto;
+}
+
+.title-box h1{
+    padding-top: 100px;
+    text-align: center;
+    font-size: 40px;
+    color: #fff;
+    line-height: 48px;
+    text-shadow: 0 2px 4px rgba(28,31,33,.6);
+}
+
+.title-box h2{
+    padding-top: 25px;
+    text-align: center;
+    font-size: 24px;
+    color: #fff;
+    line-height: 48px;
+    text-shadow: 0 2px 4px rgba(28,31,33,.6);
+}
+
+.title-box h3{
+    /*padding-top: 20px;*/
+    text-align: center;
+    font-size: 16px;
+    color: #fff;
+    line-height: 24px;
+    text-shadow: 0 2px 4px rgba(28,31,33,.6);
+}
