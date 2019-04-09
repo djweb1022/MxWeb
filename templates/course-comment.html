@@ -2,18 +2,7 @@
 {% block title %}公开课评论{% endblock %}
 {% load staticfiles %}
 {% block custom_bread %}
-    <section>
-	<div class="wp">
-		<div class="crumbs">
-			<ul>
-				<li><a href="{% url 'index' %}">首页</a>></li>
-                <li><a href="{% url 'course:course_list' %}">公开课程</a>></li>
-				<li><a href="{% url 'course:course_detail' course.id%}">课程详情</a>></li>
-                <li>课程评论</li>
-			</ul>
-		</div>
-	</div>
-    </section>
+
 {% endblock %}
 
 {% block custom_css %}
@@ -26,33 +15,70 @@
 {% endblock %}
 
 {% block content %}
-    <div id="main">
-    <div class="course-infos">
-        <div class="w pr">
-            <div style="height: 15px" class="path">
-            </div>
-            <div class="hd">
-                <h2 class="l">{{ course.name }}</h2>
-            </div>
-            <div class="statics clearfix">
-                <div class="static-item ">
-                    <span class="meta-value"><strong>{{ course.get_degree_display }}</strong></span>
-                    <span class="meta">难度</span>
-                    <em></em>
+    <div class="course-infos-top" style="background-image:url({% static 'images/5c7517030945faff20000400.jpg' %})">
+{#    <section>#}
+{#	<div class="wp">#}
+{#		<div class="crumbs whitecourse">#}
+{#			<ul>#}
+{#				<li><a class="kktk" href="{% url 'index' %}">首页</a>></li>#}
+{#                <li><a class="kktk" href="{% url 'course:course_list' %}">公开课程</a>></li>#}
+{#				<li><a class="kktk" href="{% url 'course:course_detail' course.id%}">课程详情</a>></li>#}
+{#                <li>章节信息</li>#}
+{#			</ul>#}
+{#		</div>#}
+{#	</div>#}
+{#    </section>#}
+        <div class="back-course"><a href="{% url 'course:course_detail' course.id%}"><<返回课程详情</a></div>
+        <div class="title-box">
+            <h1>{{ course.name }}</h1>
+            <div class="title-box-down">
+                <div class="title-box-down-small1">
+                    <h2>{{ course.get_category_display }}</h2>
+                    <h3>类别</h3>
                 </div>
-                <div class="static-item static-time">
-                    <span class="meta-value">{{ course.learn_times }}分钟</span>
-                    <span class="meta">时长</span>
-                    <em></em>
+                <em></em>
+                <div class="title-box-down-small2">
+                    <h2>{{ course.get_degree_display }}</h2>
+                    <h3>难度</h3>
                 </div>
-                <div class="static-item">
-                    <span class="meta-value"><strong>{{ course.students }}</strong></span>
-                    <span class="meta">学习人数</span>
-                    <em></em>
+                <div class="title-box-down-small3">
+                    <h2>{{ course.learn_times }}分钟</h2>
+                    <h3>时长</h3>
+                </div>
+                <div class="title-box-down-small4">
+                    <h2>{{ course.students }}</h2>
+                    <h3>学习人数</h3>
                 </div>
             </div>
         </div>
     </div>
+    <div id="main">
+{#    <div class="course-infos">#}
+{#        <div class="w pr">#}
+{#            <div style="height: 15px" class="path">#}
+{#            </div>#}
+{#            <div class="hd">#}
+{#                <h2 class="l">{{ course.name }}</h2>#}
+{#            </div>#}
+{#            <div class="statics clearfix">#}
+{#                <div class="static-item ">#}
+{#                    <span class="meta-value"><strong>{{ course.get_degree_display }}</strong></span>#}
+{#                    <span class="meta">难度</span>#}
+{#                    <em></em>#}
+{#                </div>#}
+{#                <div class="static-item static-time">#}
+{#                    <span class="meta-value">{{ course.learn_times }}分钟</span>#}
+{#                    <span class="meta">时长</span>#}
+{#                    <em></em>#}
+{#                </div>#}
+{#                <div class="static-item">#}
+{#                    <span class="meta-value"><strong>{{ course.students }}</strong></span>#}
+{#                    <span class="meta">学习人数</span>#}
+{#                    <em></em>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
     <div class="course-info-main clearfix w has-progress">
 
         <div class="info-bar clearfix">

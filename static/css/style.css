@@ -9200,7 +9200,7 @@ table .upload-btn {
 }
 
 .title-box h1{
-    padding-top: 100px;
+    padding-top: 20px;
     text-align: center;
     font-size: 40px;
     color: #fff;
@@ -9209,7 +9209,7 @@ table .upload-btn {
 }
 
 .title-box h2{
-    padding-top: 25px;
+    /*padding-top: 25px;*/
     text-align: center;
     font-size: 24px;
     color: #fff;
@@ -9225,3 +9225,81 @@ table .upload-btn {
     line-height: 24px;
     text-shadow: 0 2px 4px rgba(28,31,33,.6);
 }
+
+.title-box-down{
+    padding-top: 30px;
+    height: 80px;
+    width: 800px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.title-box-down-small1{
+    display: inline-block;
+    width: 25%;
+    /*border: 0;*/
+    margin-left: -3px;
+    /*height: 100%;*/
+    /*margin: 0 auto;*/
+    /*border-right: 1px solid #ffffff;*/
+}
+
+.title-box-down-small2{
+    display: inline-block;
+    width: 25%;
+    /*border: 0;*/
+    margin-left: -3px;
+    /*height: 100%;*/
+    /*margin: 0 auto;*/
+}
+
+.title-box-down-small3{
+    display: inline-block;
+    width: 25%;
+    /*border: 0;*/
+    margin-left: -3px;
+    /*height: 100%;*/
+    /*margin: 0 auto;*/
+}
+
+.title-box-down-small4{
+    display: inline-block;
+    width: 25%;
+    /*border: 0;*/
+    margin-left: -3px;
+    /*height: 100%;*/
+    /*margin: 0 auto;*/
+}
+
+.whitecourse{
+    color: #ffffff;
+}
+
+.back-course{
+    height: 50px;
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.back-course a:link,
+.back-course a:active,
+.back-course a:hover,
+.back-course a:visited {
+    font-size: 12px;
+    color: #fff;
+    line-height: 40px;
+    /*text-shadow: 0 2px 2px rgba(28,31,33,.6);*/
+    padding-left: 6px;
+}
+
+/*.back-course a:active{*/
+    /*color: #ffffff;*/
+/*}*/
+
+/*.back-course a:hover{*/
+    /*color: #ffffff;*/
+/*}*/
+
+/*.back-course a:visited{*/
+    /*color: #ffffff;*/
+/*}*/
