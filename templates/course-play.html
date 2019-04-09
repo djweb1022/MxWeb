@@ -39,7 +39,6 @@
     $(document).ready(function () {
     var options = {
     };
-    window.kind = 0;
     var player = videojs('demo-video', options, function onPlayerReady() {
         var time1;
         var t1 = 0;
@@ -54,7 +53,6 @@
                 aa();
             }, 1000);
             console.log('开始播放');
-            window.kind = 1;
         });
         //结束和暂时时清除定时器，并向后台发送数据
         this.on('ended', function () {
@@ -63,30 +61,26 @@
             console.log('结束播放');
         });
         this.on('pause', function () {
-            t1 = 0;
             window.clearInterval(time1);
-            countTime();  //向后台发数据
+            {#countTime();  //向后台发数据#}
             console.log('暂停播放');
         });
     });
-    //播放时直接关闭页面，并向后台发送数据
-    if(kind === 1) {
-        if (window.addEventListener) {
-            window.addEventListener("beforeunload", countTime, false);
-        } else {
-            window.attachEvent("onbeforeunload", countTime);
-        }
+    //刷新或直接关闭页面，并向后台发送数据
+    if (window.addEventListener) {
+        window.addEventListener("beforeunload", countTime, false);
+    } else {
+        window.attachEvent("onbeforeunload", countTime);
     }
 });
 
 function countTime() {
     var sTime = $("#aa").val();
-    var sKind = $("#bb").val();
     $.ajax({
         url : "{% url 'recommend:add_time' %}",
         type : "POST",
         dataType : 'json',
-        data : {'sTime':sTime, 'sKind':sKind, 'course_id':{{ course.id }}, 'lesson_id':{{ lesson.id }}, 'video_id':{{ video.id }}},
+        data : {'sTime':sTime, 'course_id':{{ course.id }}, 'lesson_id':{{ lesson.id }}, 'video_id':{{ video.id }}},
         async: true,
         beforeSend:function(xhr, settings){
         xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
@@ -124,7 +118,6 @@ function countTime() {
                         <li><a class="ui-tabs-active active" id="learnOn"  href="{% url 'course:course_info' course.id %}"><span>章节</span></a></li>
                         <li><a id="commentOn" class="" href="{% url 'course:course_comments' course.id %}"><span>评论</span></a></li>
                         <li><input type="text" id="aa" value="0"> </li>
-                        <li><input type="text" id="bb" value="0"> </li>
                     </ul>
                 </div>
 {#                <div id="notice" class="clearfix">#}
