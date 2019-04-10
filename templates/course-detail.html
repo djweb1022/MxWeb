@@ -35,13 +35,13 @@
 
 {% block content %}
     <section>
-	<div class="wp">
+	<div class="wpdetail">
 		<div class="groupPurchase_detail detail">
 			<div class="toppro">
 				<div class="left">
 					<div class="picbox">
 						<div class="tb-booth tb-pic">
-							<img width="440" height="300" src="{{ MEDIA_URL }}{{ course.image }}" class="jqzoom" />
+							<img width="440" height="260" src="{{ MEDIA_URL }}{{ course.image }}" class="jqzoom" />
 						</div>
                         <div class="tb-star tb-pic">
 
@@ -65,13 +65,15 @@
 						<h1 title="{{ course.name }}">{{ course.name }}</h1>
 						<span class="key">{{ course.desc }}</span>
 						<div class="prize">
-							<span class="fl">难度：<i class="key">{{ course.get_degree_display }}</i></span>
-							<span class="fr">学习人数：{{ course.students }}</span>
+                            <span class="prize-small1">类别：<i class="key">{{ course.get_category_display }}</i></span>
+							<span class="prize-small2">难度：<i class="key">{{ course.get_degree_display }}</i></span>
+							<span class="prize-small3">时长：<i class="key">{{ course.learn_times }}分钟</i></span>
+                            <span class="prize-small4">人数：<i class="key">{{ course.students }}</i></span>
 						</div>
 						<ul class="parameter">
-							<li><span class="pram word3">时&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;长：</span><span>{{ course.learn_times }}分钟</span></li>
-                            <li><span class="pram word3">章&nbsp;节&nbsp;数：</span><span>{{ course.get_zj_nums }}</span></li>
-                            <li><span class="pram word3">课程类别：</span><span title="">{{ course.category }}</span></li>
+{#							<li><span class="pram word3">时    长：</span><span>{{ course.learn_times }}分钟</span></li>#}
+{#                            <li><span class="pram word3">章&nbsp;节&nbsp;数：</span><span>{{ course.get_zj_nums }}</span></li>#}
+{#                            <li><span class="pram word3">课程类别：</span><span title="">{{ course.get_category_display }}</span></li>#}
 							<li class="piclist"><span class="pram word4">学习用户：</span>
                                 {% for user_course in course.get_learn_users %}
                                     <span class="pic" title="{{ user_course.user.username }}"><img width="40" height="40" style="" src="{{ MEDIA_URL }}{{ user_course.user.image }}"/></span>
@@ -85,21 +87,7 @@
                                 <div class="buy btn"><a class="start-learning" href="{% url 'course:course_info' course.id%}">开始学习</a></div>
 						</div>
 					</div>
-                    <div class="group-share-box">
-                        <div class="bdsharebuttonbox"
-                             data-text="django开始了"
-                             data-desc="我在#慕课网#发现了"
-                             data-comment=""
-                             data-url="/group/groupdetail/15/">
-                            <span class="fl" hidden>分享到：</span>
-                            <a href="#" class="bds_more" data-cmd="more"></a>
-                            <a title="分享到QQ空间" href="#" class="bds_qzone" data-cmd="qzone"></a>
-                            <a title="分享到新浪微博" href="#" class="bds_tsina" data-cmd="tsina"></a>
-                            <a title="分享到腾讯微博" href="#" class="bds_tqq" data-cmd="tqq"></a>
-                            <a title="分享到人人网" href="#" class="bds_renren" data-cmd="renren"></a>
-                            <a title="分享到微信" href="#" class="bds_weixin" data-cmd="weixin"></a>
-                        </div>
-                    </div>
+
 				</div>
 				<div class="right">
 					<div class="head">
