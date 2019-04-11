@@ -72,7 +72,7 @@ class AddTime(View):
             watchingtime.time = timevalue
 
             # 指定保存时间为2019年3月22日12时34分55秒
-            watchingtime.add_time = datetime(2019, 3, 22, 12, 34, 55)
+            # watchingtime.add_time = datetime(2019, 3, 22, 12, 34, 55)
 
             watchingtime.save()
             return HttpResponse('{"status":"success", "value":"timevalue"}', content_type='application/json')

@@ -28,6 +28,21 @@ class WatchingTimeAdmin(object):
     search_fields = ['id_int_user', 'id_int_course', 'user', 'course', 'time']
     list_filter = ['id_int_user', 'id_int_course', 'user', 'course', 'time', 'add_time']
 
+    def save_models(self):
+        # 重载save_models，让用户和课程的整数型ID与外键ID始终保持一致
+        obj = self.new_obj
+
+        weekday = obj.add_time.weekday()
+        year = obj.add_time.year
+        month = obj.add_time.month
+        day = obj.add_time.day
+        hour = obj.add_time.hour
+        minute = obj.add_time.minute
+        second = obj.add_time.second
+        microsecond = obj.add_time.microsecond
+
+        obj.save()
+
 
 xadmin.site.register(UserRating, UserRatingAdmin)
 xadmin.site.register(WatchingTime, WatchingTimeAdmin)
