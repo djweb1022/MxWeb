@@ -13,7 +13,7 @@ class Course(models.Model):
     course_org = models.ForeignKey(CourseOrg, verbose_name=u'课程机构', null=True, blank=True, on_delete=models.CASCADE)
     name = models.CharField(max_length=50, verbose_name=u'课程名')
     category = models.CharField(verbose_name=u'课程类别', choices=(('1', u'Python'), ('2', u'Java'), ('3', u'C/C++'),
-                                            ('4', u'Android'), ('5', u'数据结构'), ('6', u'人工智能')), max_length=20)
+                                            ('4', u'Android'), ('5', u'数据结构'), ('6', u'人工智能')), max_length=20, default=1)
     degree = models.CharField(verbose_name=u'难度', choices=(('cj', u'初级'), ('zj', u'中级'), ('gj', u'高级')), max_length=2)
     desc = models.CharField(max_length=300, verbose_name=u'课程描述')
     # detail = UEditorField(verbose_name=u'课程详情', height=250, width=1300, default='', imagePath="courses/ueditor/", filePath='courses/ueditor/')
