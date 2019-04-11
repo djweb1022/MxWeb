@@ -30,6 +30,7 @@ class WatchingTime(models.Model):
     video = models.ForeignKey(Video, verbose_name=u'视频', on_delete=models.CASCADE)
     time = models.IntegerField(default=0, verbose_name=u'观看时长(秒)')
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
+    # add_time = models.DateTimeField(verbose_name=u'添加时间')
 
     class Meta:
         verbose_name = u'观看时长'

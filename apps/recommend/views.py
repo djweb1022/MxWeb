@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from datetime import datetime
 
 from django.shortcuts import render
 from django.views.generic import View
@@ -58,7 +59,7 @@ class AddTime(View):
         lesson = Lesson.objects.get(id=int(lesson_id))
         video = Video.objects.get(id=int(video_id))
 
-        if int(course_id) > 0 and int(lesson_id) > 0 and int(video_id) > 0 and int(timevalue) >= 5:
+        if int(course_id) > 0 and int(lesson_id) > 0 and int(video_id) > 0 and int(timevalue) >= 0:
             watchingtime = WatchingTime()
             watchingtime.id_int_user = request.user.id
             watchingtime.id_int_course = course_id
@@ -69,6 +70,10 @@ class AddTime(View):
             watchingtime.lesson = lesson
             watchingtime.video = video
             watchingtime.time = timevalue
+
+            # 指定保存时间为2019年3月22日12时34分55秒
+            watchingtime.add_time = datetime(2019, 3, 22, 12, 34, 55)
+
             watchingtime.save()
             return HttpResponse('{"status":"success", "value":"timevalue"}', content_type='application/json')
         else:
