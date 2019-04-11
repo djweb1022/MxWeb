@@ -151,6 +151,7 @@ STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, 'static'),
 # )
 
+# secret for safe
 EMAIL_HOST = 'smtp.126.com'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'youremail@126.com'
@@ -169,3 +170,4 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 USE_L10N = False
 DATETIME_FORMAT = 'Y年n月j日 H:i:s'
 DATE_FORMAT = 'Y年n月j日'
+
