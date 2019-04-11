@@ -71,6 +71,32 @@ class AddTime(View):
             watchingtime.video = video
             watchingtime.time = timevalue
 
+            # 对保存时间做类别判断
+            get_time = datetime.now()
+            watchingtime.add_time = get_time
+            weekday = get_time.weekday()
+            hour = get_time.hour
+            if 0 <= int(weekday) <= 4:
+                if 6 <= int(hour) <= 11:
+                    watchingtime.time_type = 1
+                if 12 <= int(hour) <= 17:
+                    watchingtime.time_type = 2
+                if 18 <= int(hour) <= 23:
+                    watchingtime.time_type = 3
+                if 0 <= int(hour) <= 5:
+                    watchingtime.time_type = 4
+            elif 5 <= int(weekday) <= 6:
+                if 6 <= int(hour) <= 11:
+                    watchingtime.time_type = 5
+                if 12 <= int(hour) <= 17:
+                    watchingtime.time_type = 6
+                if 18 <= int(hour) <= 23:
+                    watchingtime.time_type = 7
+                if 0 <= int(hour) <= 5:
+                    watchingtime.time_type = 8
+            else:
+                watchingtime.time_type = 9
+
             # 指定保存时间为2019年3月22日12时34分55秒
             # watchingtime.add_time = datetime(2019, 3, 22, 12, 34, 55)
 

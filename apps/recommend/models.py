@@ -30,7 +30,7 @@ class WatchingTime(models.Model):
     video = models.ForeignKey(Video, verbose_name=u'视频', on_delete=models.CASCADE)
     time = models.IntegerField(default=0, verbose_name=u'观看时长(秒)')
 
-    timetype = models.CharField(verbose_name=u'课程类别', choices=(('1', u'工作日上午'), ('2', u'工作日下午'), ('3', u'工作日晚间'),
+    time_type = models.CharField(verbose_name=u'时间类别', choices=(('1', u'工作日上午'), ('2', u'工作日下午'), ('3', u'工作日晚间'),
     ('4', u'工作日凌晨'), ('5', u'周末上午'), ('6', u'周末下午'), ('7', u'周末晚间'), ('8', u'周末凌晨'), ('9', u'无')), max_length=20, default=1)
 
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u'添加时间')
