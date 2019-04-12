@@ -2,10 +2,49 @@
 {% block title %}推荐初始页{% endblock %}
 {% load staticfiles %}
 
-{% block custom_css %}
-
-{% endblock %}
+{% block custom_css %}{% endblock %}
 
 {% block content %}
+    <div class="rec-main">
+        <div class="rec-main-1200">
+            <div class="rec-row">
+                <div class="rec-card-border1">
+                    <div class="rec-card rec-card-size1 bg-gradient1">
+                        <div class="rec-card-content">
+                            <img src="{% static 'images/circle.svg' %}" class="card-img-absolute">
+                            <h1 class="rec-h1-1">你好{{ user.username }}!</h1>
+                            <h1 class="rec-h1-2">现在的时间是<input type="text" id="second" value="0"/></h1>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block custom_js %}
+    <script type="text/javascript">
+    function gettime(){
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url:"{% url 'recommend:get_time' %}",
+            data:{},
+            async: true,
+            beforeSend:function(xhr, settings){
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            },
+            success: function(data) {
+                if(data.status == 'fail'){
+                    console.log('失败');
+                }else if(data){
+                    console.log(data);
+                    document.getElementById('second').value = data.second;
+                }
+            },
+        });
+    }
+    setInterval(function(){ gettime(); }, 1000)
+    </script>
 {% endblock %}

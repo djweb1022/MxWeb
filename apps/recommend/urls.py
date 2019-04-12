@@ -5,7 +5,7 @@ __date__ = '2019/4/6 10:21'
 
 from django.conf.urls import url, include
 
-from .views import InitialView, AddRating, AddTime
+from .views import InitialView, AddRating, AddTime, Gettime
 
 
 urlpatterns = [
@@ -17,4 +17,7 @@ urlpatterns = [
 
     # 保存观看时长
     url(r'^add_time/$', AddTime.as_view(), name='add_time'),
+
+    # 获取当前时间
+    url(r'^get_time/$', Gettime.as_view(), name='get_time'),
 ]

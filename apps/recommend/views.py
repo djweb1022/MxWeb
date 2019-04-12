@@ -8,11 +8,37 @@ from django.http import HttpResponse
 from django.db.models import Q
 from .models import UserRating, WatchingTime
 from courses.models import Course, Lesson, Video
+import json
 
 
 class InitialView(View):
     def get(self, request):
-        return render(request, 'recommend-initial.html', {})
+        user = request.user
+        return render(request, 'recommend-initial.html', {
+            'user': user,
+        })
+
+
+class Gettime(View):
+    """返回当前时间"""
+    def post(self, request):
+        get_time = datetime.now()
+        year = get_time.year
+        month = get_time.month
+        day = get_time.day
+        hour = get_time.hour
+        minute = get_time.minute
+        second = get_time.second
+
+        data = {
+            'minute': minute,
+            'second': second,
+        }
+
+        # return HttpResponse('{"status":"success"}', second)
+
+        return HttpResponse(json.dumps(data), content_type='application/json')
+
 
 
 class AddRating(View):
