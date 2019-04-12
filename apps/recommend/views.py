@@ -12,7 +12,7 @@ from courses.models import Course, Lesson, Video
 
 class InitialView(View):
     def get(self, request):
-        return render(request, 'base.html', {})
+        return render(request, 'recommend-initial.html', {})
 
 
 class AddRating(View):

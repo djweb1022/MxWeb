@@ -9391,3 +9391,9 @@ table .upload-btn {
     width: 24%;
     /*margin-left: 0px;*/
 }
+
+.rec-main{
+    width: 100%;
+    height: 1000px;
+
+}
