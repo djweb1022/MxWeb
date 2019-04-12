@@ -71,28 +71,35 @@ class AddTime(View):
             watchingtime.video = video
             watchingtime.time = timevalue
 
-            # 对保存时间做类别判断
+            # 获得目前的时间
             get_time = datetime.now()
+
+            # 设定调试时间
+            # get_time = datetime(2019, 3, 22, 18, 34, 55)
+
+            # 保存时间为目前获得的时间，提取星期、小时的值
             watchingtime.add_time = get_time
             weekday = get_time.weekday()
             hour = get_time.hour
+
+            # 对保存时间的类别作判断
             if 0 <= int(weekday) <= 4:
                 if 6 <= int(hour) <= 11:
                     watchingtime.time_type = 1
-                if 12 <= int(hour) <= 17:
+                elif 12 <= int(hour) <= 17:
                     watchingtime.time_type = 2
-                if 18 <= int(hour) <= 23:
+                elif 18 <= int(hour) <= 23:
                     watchingtime.time_type = 3
-                if 0 <= int(hour) <= 5:
+                elif 0 <= int(hour) <= 5:
                     watchingtime.time_type = 4
             elif 5 <= int(weekday) <= 6:
                 if 6 <= int(hour) <= 11:
                     watchingtime.time_type = 5
-                if 12 <= int(hour) <= 17:
+                elif 12 <= int(hour) <= 17:
                     watchingtime.time_type = 6
-                if 18 <= int(hour) <= 23:
+                elif 18 <= int(hour) <= 23:
                     watchingtime.time_type = 7
-                if 0 <= int(hour) <= 5:
+                elif 0 <= int(hour) <= 5:
                     watchingtime.time_type = 8
             else:
                 watchingtime.time_type = 9
@@ -101,6 +108,6 @@ class AddTime(View):
             # watchingtime.add_time = datetime(2019, 3, 22, 12, 34, 55)
 
             watchingtime.save()
-            return HttpResponse('{"status":"success", "value":"timevalue"}', content_type='application/json')
+            return HttpResponse('{"status":"success", "value":"已保存"}', content_type='application/json')
         else:
             return HttpResponse('{"status":"fail", "msg":"不保存"}', content_type='application/json')

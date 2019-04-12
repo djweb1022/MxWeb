@@ -44,20 +44,20 @@ class WatchingTimeAdmin(object):
         if 0 <= int(weekday) <= 4:
             if 6 <= int(hour) <= 11:
                 obj.time_type = 1
-            if 12 <= int(hour) <= 17:
+            elif 12 <= int(hour) <= 17:
                 obj.time_type = 2
-            if 18 <= int(hour) <= 23:
+            elif 18 <= int(hour) <= 23:
                 obj.time_type = 3
-            if 0 <= int(hour) <= 5:
+            elif 0 <= int(hour) <= 5:
                 obj.time_type = 4
         elif 5 <= int(weekday) <= 6:
             if 6 <= int(hour) <= 11:
                 obj.time_type = 5
-            if 12 <= int(hour) <= 17:
+            elif 12 <= int(hour) <= 17:
                 obj.time_type = 6
-            if 18 <= int(hour) <= 23:
+            elif 18 <= int(hour) <= 23:
                 obj.time_type = 7
-            if 0 <= int(hour) <= 5:
+            elif 0 <= int(hour) <= 5:
                 obj.time_type = 8
         else:
             obj.time_type = 9
