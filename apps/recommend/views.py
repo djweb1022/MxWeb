@@ -15,8 +15,6 @@ import json
 
 class InitialView(LoginRequiredMixIn, View):
     def get(self, request):
-        # string_type = ''
-        # string_tag = ''
 
         user = request.user
 
@@ -75,6 +73,7 @@ class InitialView(LoginRequiredMixIn, View):
         # 排序
         list_timetype = sorted(list_timetype)
         # 分类统计观看时长，返回字典
+        list_type_value_count = 0
         for single_type in list_timetype:
             # print(single_type)
             user_type_watchingtime = WatchingTime.objects.filter(user=request.user, time_type=single_type)
@@ -83,17 +82,54 @@ class InitialView(LoginRequiredMixIn, View):
                 sum_time += record_user_type_watchingtime.time
             a = [single_type, sum_time]
             list_type_value.append(a)
+            list_type_value_count += 1
 
         # 嵌套列表按字列表第二个值——时间总和 进行排序
         print(list_type_value)
         list_type_value = sorted(list_type_value, key=operator.itemgetter(1), reverse=True)
         print(list_type_value)
-        # print(list_type_value[4][1])
+        print(list_type_value_count)
+
+        max_type = int(list_type_value[0][0])
+        max_time = int(list_type_value[0][1])
+
+        def get_max_type_return(max_type_1):
+            max_turple_1 = ()
+
+            if max_type_1 == 1:
+                max_turple_1 = get_time_type(0, 6)
+            elif max_type_1 == 2:
+                max_turple_1 = get_time_type(0, 12)
+            elif max_type_1 == 3:
+                max_turple_1 = get_time_type(0, 18)
+            elif max_type_1 == 4:
+                max_turple_1 = get_time_type(0, 0)
+            elif max_type_1 == 5:
+                max_turple_1 = get_time_type(5, 6)
+            elif max_type_1 == 6:
+                max_turple_1 = get_time_type(5, 12)
+            elif max_type_1 == 7:
+                max_turple_1 = get_time_type(5, 18)
+            elif max_type_1 == 8:
+                max_turple_1 = get_time_type(5, 0)
+
+            string_max_type_1 = max_turple_1[0]
+            string_max_tag_1 = max_turple_1[1]
+
+            return string_max_type_1, string_max_tag_1
+
+        max_turple = get_max_type_return(max_type)
+        string_max_type = max_turple[0]
+        string_max_tag = max_turple[1]
+        max_time_minute = int(max_time) % 60
 
         return render(request, 'recommend-initial.html', {
             'user': user,
             'string_type': string_type,
             'string_tag': string_tag,
+            'string_max_type': string_max_type,
+            'string_max_tag': string_max_tag,
+            'max_time_minute': max_time_minute,
         })
 
 
