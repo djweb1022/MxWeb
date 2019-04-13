@@ -30,9 +30,19 @@ class Gettime(View):
         minute = get_time.minute
         second = get_time.second
 
+        # 若时、分、秒在0-9之间，前面加个0
+        def zeronum(num):
+            if 0 <= int(num) <= 9:
+                num = '0' + str(num)
+            return num
+        hour = zeronum(hour)
+        minute = zeronum(minute)
+        second = zeronum(second)
+
+        string = '%d年%d月%d日 %s:%s:%s' % (year, month, day, hour, minute, second)
+
         data = {
-            'minute': minute,
-            'second': second,
+            'string': string,
         }
 
         # return HttpResponse('{"status":"success"}', second)

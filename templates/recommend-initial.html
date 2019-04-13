@@ -13,8 +13,10 @@
                         <div class="rec-card-content">
                             <img src="{% static 'images/circle.svg' %}" class="card-img-absolute">
                             <h1 class="rec-h1-1">你好{{ user.username }}!</h1>
-                            <h1 class="rec-h1-2">现在的时间是<input type="text" id="second" value="0"/></h1>
-
+                                <div class="rec-row2">
+                                    <h1 class="rec-h1-2">现在的时间是</h1>
+                                    <input class="rec-h1-3" type="text" id="second" value=""/>
+                                </div>
                         </div>
                     </div>
                 </div>
@@ -40,11 +42,12 @@
                     console.log('失败');
                 }else if(data){
                     console.log(data);
-                    document.getElementById('second').value = data.second;
+                    document.getElementById('second').value = data.string;
                 }
             },
         });
     }
+    gettime();
     setInterval(function(){ gettime(); }, 1000)
     </script>
 {% endblock %}
