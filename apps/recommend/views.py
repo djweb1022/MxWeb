@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from datetime import datetime
+import operator
 
 from django.shortcuts import render
 from django.views.generic import View
@@ -8,19 +9,96 @@ from django.http import HttpResponse
 from django.db.models import Q
 from .models import UserRating, WatchingTime
 from courses.models import Course, Lesson, Video
+from utils.mixin_utils import LoginRequiredMixIn
 import json
 
 
-class InitialView(View):
+class InitialView(LoginRequiredMixIn, View):
     def get(self, request):
+        # string_type = ''
+        # string_tag = ''
+
         user = request.user
+
+        # 对当前情境类别作判断，返回提示语
+        def get_time_type(weekday_1, hour_1):
+            string_type_1 = ''
+            string_tag_1 = ''
+            if 0 <= int(weekday_1) <= 4:
+                if 6 <= int(hour_1) <= 11:
+                    string_type_1 = '工作日上午'
+                    string_tag_1 = '区间：周一至周五 每天6:00-11:59'
+                elif 12 <= int(hour_1) <= 17:
+                    string_type_1 = '工作日下午'
+                    string_tag_1 = '区间：周一至周五 每天12:00-17:59'
+                elif 18 <= int(hour_1) <= 23:
+                    string_type_1 = '工作日晚间'
+                    string_tag_1 = '区间：周一至周五 每天18:00-23:59'
+                elif 0 <= int(hour_1) <= 5:
+                    string_type_1 = '工作日凌晨'
+                    string_tag_1 = '区间：周一至周五 每天0:00-5:59'
+            elif 5 <= int(weekday_1) <= 6:
+                if 6 <= int(hour_1) <= 11:
+                    string_type_1 = '周末上午'
+                    string_tag_1 = '区间：周六和周日 每天6:00-11:59'
+                elif 12 <= int(hour_1) <= 17:
+                    string_type_1 = '周末下午'
+                    string_tag_1 = '区间：周六和周日 每天12:00-17:59'
+                elif 18 <= int(hour_1) <= 23:
+                    string_type_1 = '周末晚间'
+                    string_tag_1 = '区间：周六和周日 每天18:00-23:59'
+                elif 0 <= int(hour_1) <= 5:
+                    string_type_1 = '周末凌晨'
+                    string_tag_1 = '区间：周六和周日 每天0:00-5:59'
+            else:
+                string_type_1 = '无情境'
+                string_tag_1 = '无区间'
+
+            return string_type_1, string_tag_1
+
+        get_time = datetime.now()
+        hour = get_time.hour
+        weekday = get_time.weekday()
+        time_turple = get_time_type(weekday, hour)
+        string_type = time_turple[0]
+        string_tag = time_turple[1]
+
+        # 下面统计观看时间最长的时间类型，作为该用户最喜欢的时间情境
+        user_watchingtime = WatchingTime.objects.filter(user=request.user)
+        list_timetype = []
+        list_type_value = []
+        # 获取所有已经出现的时间类型
+        for record in user_watchingtime:
+            list_timetype.append(record.time_type)
+        # 去除重复值
+        list_timetype = list(set(list_timetype))
+        # 排序
+        list_timetype = sorted(list_timetype)
+        # 分类统计观看时长，返回字典
+        for single_type in list_timetype:
+            # print(single_type)
+            user_type_watchingtime = WatchingTime.objects.filter(user=request.user, time_type=single_type)
+            sum_time = 0
+            for record_user_type_watchingtime in user_type_watchingtime:
+                sum_time += record_user_type_watchingtime.time
+            a = [single_type, sum_time]
+            list_type_value.append(a)
+
+        # 嵌套列表按字列表第二个值——时间总和 进行排序
+        print(list_type_value)
+        list_type_value = sorted(list_type_value, key=operator.itemgetter(1), reverse=True)
+        print(list_type_value)
+        # print(list_type_value[4][1])
+
         return render(request, 'recommend-initial.html', {
             'user': user,
+            'string_type': string_type,
+            'string_tag': string_tag,
         })
 
 
 class Gettime(View):
-    """返回当前时间"""
+    """返回当前时间、情境"""
     def post(self, request):
         get_time = datetime.now()
         year = get_time.year
@@ -30,7 +108,7 @@ class Gettime(View):
         minute = get_time.minute
         second = get_time.second
 
-        # 若时、分、秒在0-9之间，前面加个0
+        # 若时、分、秒在0-9之间，前面加个0再显示
         def zeronum(num):
             if 0 <= int(num) <= 9:
                 num = '0' + str(num)
@@ -39,10 +117,10 @@ class Gettime(View):
         minute = zeronum(minute)
         second = zeronum(second)
 
-        string = '%d年%d月%d日 %s:%s:%s' % (year, month, day, hour, minute, second)
+        string_now = '%d年%d月%d日 %s:%s:%s' % (year, month, day, hour, minute, second)
 
         data = {
-            'string': string,
+            'string_now': string_now,
         }
 
         # return HttpResponse('{"status":"success"}', second)
