@@ -18,45 +18,12 @@ class InitialView(LoginRequiredMixIn, View):
 
         user = request.user
 
-        # 对当前情境类别作判断，返回提示语
-        def get_time_type(weekday_1, hour_1):
-            string_type_1 = ''
-            string_tag_1 = ''
-            if 0 <= int(weekday_1) <= 4:
-                if 6 <= int(hour_1) <= 11:
-                    string_type_1 = '工作日上午'
-                    string_tag_1 = '区间：周一至周五 每天6:00-11:59'
-                elif 12 <= int(hour_1) <= 17:
-                    string_type_1 = '工作日下午'
-                    string_tag_1 = '区间：周一至周五 每天12:00-17:59'
-                elif 18 <= int(hour_1) <= 23:
-                    string_type_1 = '工作日晚间'
-                    string_tag_1 = '区间：周一至周五 每天18:00-23:59'
-                elif 0 <= int(hour_1) <= 5:
-                    string_type_1 = '工作日凌晨'
-                    string_tag_1 = '区间：周一至周五 每天0:00-5:59'
-            elif 5 <= int(weekday_1) <= 6:
-                if 6 <= int(hour_1) <= 11:
-                    string_type_1 = '周末上午'
-                    string_tag_1 = '区间：周六和周日 每天6:00-11:59'
-                elif 12 <= int(hour_1) <= 17:
-                    string_type_1 = '周末下午'
-                    string_tag_1 = '区间：周六和周日 每天12:00-17:59'
-                elif 18 <= int(hour_1) <= 23:
-                    string_type_1 = '周末晚间'
-                    string_tag_1 = '区间：周六和周日 每天18:00-23:59'
-                elif 0 <= int(hour_1) <= 5:
-                    string_type_1 = '周末凌晨'
-                    string_tag_1 = '区间：周六和周日 每天0:00-5:59'
-            else:
-                string_type_1 = '无情境'
-                string_tag_1 = '无区间'
-
-            return string_type_1, string_tag_1
-
-        get_time = datetime.now()
+        # 获取现在时间，提取小时、星期
+        get_time = get_now_time()
         hour = get_time.hour
         weekday = get_time.weekday()
+
+        # 调用函数获得提示语
         time_turple = get_time_type(weekday, hour)
         string_type = time_turple[0]
         string_tag = time_turple[1]
@@ -65,14 +32,14 @@ class InitialView(LoginRequiredMixIn, View):
         user_watchingtime = WatchingTime.objects.filter(user=request.user)
         list_timetype = []
         list_type_value = []
-        # 获取所有已经出现的时间类型
+        # 获取所有已经出现的时间类型，组成列表
         for record in user_watchingtime:
             list_timetype.append(record.time_type)
-        # 去除重复值
+        # 去除列表中的重复值
         list_timetype = list(set(list_timetype))
-        # 排序
+        # 列表排序
         list_timetype = sorted(list_timetype)
-        # 分类统计观看时长，返回字典
+        # 分类统计观看时长，返回嵌套列表
         list_type_value_count = 0
         for single_type in list_timetype:
             # print(single_type)
@@ -90,34 +57,11 @@ class InitialView(LoginRequiredMixIn, View):
         print(list_type_value)
         print(list_type_value_count)
 
+        # 获取嵌套列表中的第一项，也就是时间总和最长的类型和秒数
         max_type = int(list_type_value[0][0])
         max_time = int(list_type_value[0][1])
 
-        def get_max_type_return(max_type_1):
-            max_turple_1 = ()
-
-            if max_type_1 == 1:
-                max_turple_1 = get_time_type(0, 6)
-            elif max_type_1 == 2:
-                max_turple_1 = get_time_type(0, 12)
-            elif max_type_1 == 3:
-                max_turple_1 = get_time_type(0, 18)
-            elif max_type_1 == 4:
-                max_turple_1 = get_time_type(0, 0)
-            elif max_type_1 == 5:
-                max_turple_1 = get_time_type(5, 6)
-            elif max_type_1 == 6:
-                max_turple_1 = get_time_type(5, 12)
-            elif max_type_1 == 7:
-                max_turple_1 = get_time_type(5, 18)
-            elif max_type_1 == 8:
-                max_turple_1 = get_time_type(5, 0)
-
-            string_max_type_1 = max_turple_1[0]
-            string_max_tag_1 = max_turple_1[1]
-
-            return string_max_type_1, string_max_tag_1
-
+        # 调用函数，获得最大时间类型对应提示语
         max_turple = get_max_type_return(max_type)
         string_max_type = max_turple[0]
         string_max_tag = max_turple[1]
@@ -136,7 +80,7 @@ class InitialView(LoginRequiredMixIn, View):
 class Gettime(View):
     """返回当前时间、情境"""
     def post(self, request):
-        get_time = datetime.now()
+        get_time = get_now_time()
         year = get_time.year
         month = get_time.month
         day = get_time.day
@@ -162,7 +106,6 @@ class Gettime(View):
         # return HttpResponse('{"status":"success"}', second)
 
         return HttpResponse(json.dumps(data), content_type='application/json')
-
 
 
 class AddRating(View):
@@ -196,7 +139,7 @@ class AddRating(View):
 
 
 class AddTime(View):
-    """用户观看时长"""
+    """用户观看时长保存"""
     def post(self, request):
         """通过ajax获得前端传来的数据"""
         course_id = request.POST.get('course_id', 0)
@@ -232,27 +175,7 @@ class AddTime(View):
             weekday = get_time.weekday()
             hour = get_time.hour
 
-            # 对保存时间的类别作判断
-            if 0 <= int(weekday) <= 4:
-                if 6 <= int(hour) <= 11:
-                    watchingtime.time_type = 1
-                elif 12 <= int(hour) <= 17:
-                    watchingtime.time_type = 2
-                elif 18 <= int(hour) <= 23:
-                    watchingtime.time_type = 3
-                elif 0 <= int(hour) <= 5:
-                    watchingtime.time_type = 4
-            elif 5 <= int(weekday) <= 6:
-                if 6 <= int(hour) <= 11:
-                    watchingtime.time_type = 5
-                elif 12 <= int(hour) <= 17:
-                    watchingtime.time_type = 6
-                elif 18 <= int(hour) <= 23:
-                    watchingtime.time_type = 7
-                elif 0 <= int(hour) <= 5:
-                    watchingtime.time_type = 8
-            else:
-                watchingtime.time_type = 9
+            watchingtime.time_type = get_time_type_num(weekday, hour)
 
             # 指定保存时间为2019年3月22日12时34分55秒
             # watchingtime.add_time = datetime(2019, 3, 22, 12, 34, 55)
@@ -261,3 +184,104 @@ class AddTime(View):
             return HttpResponse('{"status":"success", "value":"已保存"}', content_type='application/json')
         else:
             return HttpResponse('{"status":"fail", "msg":"不保存"}', content_type='application/json')
+
+
+def get_now_time():
+    """获得目前时间"""
+    get_time = datetime.now()
+
+    # 指定当前时间为2019年3月22日12时34分55秒
+    # get_time = datetime(2019, 3, 22, 12, 34, 55)
+
+    return get_time
+
+
+def get_time_type_num(weekday_1, hour_1):
+    """传入星期、小时，对当前情境类别作判断，返回编号"""
+    time_type = 9
+    if 0 <= int(weekday_1) <= 4:
+        if 6 <= int(hour_1) <= 11:
+            time_type = 1
+        elif 12 <= int(hour_1) <= 17:
+            time_type = 2
+        elif 18 <= int(hour_1) <= 23:
+            time_type = 3
+        elif 0 <= int(hour_1) <= 5:
+            time_type = 4
+    elif 5 <= int(weekday_1) <= 6:
+        if 6 <= int(hour_1) <= 11:
+            time_type = 5
+        elif 12 <= int(hour_1) <= 17:
+            time_type = 6
+        elif 18 <= int(hour_1) <= 23:
+            time_type = 7
+        elif 0 <= int(hour_1) <= 5:
+            time_type = 8
+    else:
+        time_type = 9
+
+    return time_type
+
+
+def get_time_type(weekday_1, hour_1):
+    """传入星期、小时，对当前情境类别作判断，返回提示语"""
+    string_type_1 = ''
+    string_tag_1 = ''
+    if 0 <= int(weekday_1) <= 4:
+        if 6 <= int(hour_1) <= 11:
+            string_type_1 = '工作日上午'
+            string_tag_1 = '区间：周一至周五 每天6:00-11:59'
+        elif 12 <= int(hour_1) <= 17:
+            string_type_1 = '工作日下午'
+            string_tag_1 = '区间：周一至周五 每天12:00-17:59'
+        elif 18 <= int(hour_1) <= 23:
+            string_type_1 = '工作日晚间'
+            string_tag_1 = '区间：周一至周五 每天18:00-23:59'
+        elif 0 <= int(hour_1) <= 5:
+            string_type_1 = '工作日凌晨'
+            string_tag_1 = '区间：周一至周五 每天0:00-5:59'
+    elif 5 <= int(weekday_1) <= 6:
+        if 6 <= int(hour_1) <= 11:
+            string_type_1 = '周末上午'
+            string_tag_1 = '区间：周六和周日 每天6:00-11:59'
+        elif 12 <= int(hour_1) <= 17:
+            string_type_1 = '周末下午'
+            string_tag_1 = '区间：周六和周日 每天12:00-17:59'
+        elif 18 <= int(hour_1) <= 23:
+            string_type_1 = '周末晚间'
+            string_tag_1 = '区间：周六和周日 每天18:00-23:59'
+        elif 0 <= int(hour_1) <= 5:
+            string_type_1 = '周末凌晨'
+            string_tag_1 = '区间：周六和周日 每天0:00-5:59'
+    else:
+        string_type_1 = '无情境'
+        string_tag_1 = '无区间'
+
+    return string_type_1, string_tag_1
+
+
+def get_max_type_return(max_type_1):
+    """传入最大时间类型，返回提示语"""
+    max_turple_1 = ()
+
+    if max_type_1 == 1:
+        max_turple_1 = get_time_type(0, 6)
+    elif max_type_1 == 2:
+        max_turple_1 = get_time_type(0, 12)
+    elif max_type_1 == 3:
+        max_turple_1 = get_time_type(0, 18)
+    elif max_type_1 == 4:
+        max_turple_1 = get_time_type(0, 0)
+    elif max_type_1 == 5:
+        max_turple_1 = get_time_type(5, 6)
+    elif max_type_1 == 6:
+        max_turple_1 = get_time_type(5, 12)
+    elif max_type_1 == 7:
+        max_turple_1 = get_time_type(5, 18)
+    elif max_type_1 == 8:
+        max_turple_1 = get_time_type(5, 0)
+
+    string_max_type_1 = max_turple_1[0]
+    string_max_tag_1 = max_turple_1[1]
+
+    return string_max_type_1, string_max_tag_1
