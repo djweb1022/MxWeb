@@ -65,7 +65,18 @@ class InitialView(LoginRequiredMixIn, View):
         max_turple = get_max_type_return(max_type)
         string_max_type = max_turple[0]
         string_max_tag = max_turple[1]
-        max_time_minute = int(max_time) % 60
+
+        # 遍历嵌套列表
+        list_record_type = []
+        list_record_seconds = []
+        for list_type_value_record in list_type_value:
+            record_type = int(list_type_value_record[0])
+            record_seconds = int(list_type_value_record[1])
+            list_record_type.append(record_type)
+            list_record_seconds.append(record_seconds)
+
+        print(list_record_type)
+        print(list_record_seconds)
 
         return render(request, 'recommend-initial.html', {
             'user': user,
@@ -73,7 +84,6 @@ class InitialView(LoginRequiredMixIn, View):
             'string_tag': string_tag,
             'string_max_type': string_max_type,
             'string_max_tag': string_max_tag,
-            'max_time_minute': max_time_minute,
         })
 
 
@@ -285,3 +295,21 @@ def get_max_type_return(max_type_1):
     string_max_tag_1 = max_turple_1[1]
 
     return string_max_type_1, string_max_tag_1
+
+
+def get_hour_minute_second(seconds):
+    """传入秒数，转化为x小时x分钟x秒"""
+    hour = 0
+    minute = 0
+    second = 0
+    if seconds // 60:
+        minute = seconds // 60
+        second = seconds % 60
+        if minute // 60:
+            hour = minute // 60
+            minute = minute % 60
+        else:
+            pass
+    else:
+        second = seconds
+    return hour, minute, second
