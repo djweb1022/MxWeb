@@ -66,7 +66,7 @@ class InitialView(LoginRequiredMixIn, View):
         string_max_type = max_turple[0]
         string_max_tag = max_turple[1]
 
-        # 遍历嵌套列表
+        # 遍历嵌套列表，准备统计扇形图
         list_record_type = []
         list_record_seconds = []
         for list_type_value_record in list_type_value:
@@ -74,9 +74,27 @@ class InitialView(LoginRequiredMixIn, View):
             record_seconds = int(list_type_value_record[1])
             list_record_type.append(record_type)
             list_record_seconds.append(record_seconds)
-
         print(list_record_type)
         print(list_record_seconds)
+
+        # 将类型数字列表转化为相应的文字列表，将秒数列表转化为分钟列表
+        list_type_word = []
+        list_type_minute = []
+        for record_type in list_record_type:
+            type_word = str(get_max_type_return(record_type)[0])
+            list_type_word.append(type_word)
+        for record_seconds in list_record_seconds:
+            record_minutes = record_seconds//60
+            list_type_minute.append(record_minutes)
+        print(list_type_word)
+        print(list_type_minute)
+
+        # 按echart要求列表嵌套字典
+        list_value_name = []
+        for i in range(0, len(list_type_word)):
+            dict_value_name = {'value': list_type_minute[i], 'name': list_type_word[i]}
+            list_value_name.append(dict_value_name)
+        print(list_value_name)
 
         return render(request, 'recommend-initial.html', {
             'user': user,
@@ -84,6 +102,9 @@ class InitialView(LoginRequiredMixIn, View):
             'string_tag': string_tag,
             'string_max_type': string_max_type,
             'string_max_tag': string_max_tag,
+            'list_type_word': list_type_word,
+            # 'list_value_name': json.dumps(list_value_name),
+            'list_value_name': list_value_name,
         })
 
 

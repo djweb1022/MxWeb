@@ -47,9 +47,9 @@
             </div>
             <div class="chart-1">
                 <div class="rec-card">
-                    <div id="main" style="width:400px;height:400px;padding:20px;display: inline-block">
+                    <div id="main" style="width:400px;height:400px;padding:20px 20px 0 20px;display: inline-block">
                     </div>
-                    <div id="main2" style="width:400px;height:400px;padding: 20px 0;display: inline-block">
+                    <div id="main2" style="width:500px;height:400px;padding: 20px 0 0 0;display: inline-block">
                     </div>
                 </div>
             </div>
@@ -117,20 +117,57 @@
     <script type="text/javascript">
         // 基于准备好的dom，初始化echarts实例
         var myChart = echarts.init(document.getElementById('main2'),'mytheme');
-
-        // 指定图表的配置项和数据
-        var option = {
-            series: {
-                type: 'pie',
-                data: [
-                    {name: 'A', value: 1212},
-                    {name: 'B', value: 2323},
-                    {name: 'C', value: 1919}
-                ]
-            }
+        myChart.hideLoading();
+        option = {
+            title: {
+                text: '不同情境下学习时间统计',
+                textAlign: 'auto',
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b}: {c}分钟({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                x: 'left',
+                top: '30',
+                {#data:['直接访问','邮件营销','联盟广告','视频广告','搜索引擎']#}
+                data:{{ list_type_word|safe }},
+                textStyle: {
+                    color:'#4a0064',
+                },
+            },
+            series: [
+                {
+                    name:'访问来源',
+                    type:'pie',
+                    radius: ['50%', '70%'],
+                    avoidLabelOverlap: false,
+                    label: {
+                        normal: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            show: true,
+                            textStyle: {
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    },
+                    labelLine: {
+                        normal: {
+                            show: false
+                        }
+                    },
+                    data:{{ list_value_name|safe }}
+                }
+            ]
         };
-        // 使用刚指定的配置项和数据显示图表。
-        myChart.setOption(option);
+        if (option && typeof option === "object") {
+            myChart.setOption(option, true);
+        }
     </script>
 
 {% endblock %}

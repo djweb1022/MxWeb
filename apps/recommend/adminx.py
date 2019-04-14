@@ -12,6 +12,8 @@ class UserRatingAdmin(object):
     search_fields = ['id_int_user', 'id_int_course', 'user', 'course', 'rating']
     list_filter = ['id_int_user', 'id_int_course', 'user', 'course', 'rating', 'add_time']
 
+    list_editable = ['rating']
+
     def save_models(self):
         # 重载save_models，让用户和课程的整数型ID与外键ID始终保持一致
         obj = self.new_obj
@@ -27,6 +29,8 @@ class WatchingTimeAdmin(object):
     list_display = ['id_int_user', 'id_int_course', 'user', 'course', 'time', 'add_time', 'time_type']
     search_fields = ['id_int_user', 'id_int_course', 'user', 'course', 'time']
     list_filter = ['id_int_user', 'id_int_course', 'user', 'course', 'time', 'add_time', 'time_type']
+
+    list_editable = ['time']
 
     def save_models(self):
         # 重载save_models，让用户和课程的整数型ID与外键ID始终保持一致
