@@ -10,7 +10,7 @@ from django.db.models import Q
 from .models import UserRating, WatchingTime
 from courses.models import Course, Lesson, Video
 from utils.mixin_utils import LoginRequiredMixIn
-import json
+import json, math
 
 
 class InitialView(LoginRequiredMixIn, View):
@@ -28,7 +28,7 @@ class InitialView(LoginRequiredMixIn, View):
         string_type = time_turple[0]
         string_tag = time_turple[1]
 
-        # 下面统计观看时间最长的时间类型，作为该用户最喜欢的时间情境
+        """下面统计观看时间最长的时间类型，作为该用户最喜欢的时间情境"""
         user_watchingtime = WatchingTime.objects.filter(user=request.user)
         list_timetype = []
         list_type_value = []
@@ -52,10 +52,10 @@ class InitialView(LoginRequiredMixIn, View):
             list_type_value_count += 1
 
         # 嵌套列表按字列表第二个值——时间总和 进行排序
-        print(list_type_value)
+        # print(list_type_value)
         list_type_value = sorted(list_type_value, key=operator.itemgetter(1), reverse=True)
-        print(list_type_value)
-        print(list_type_value_count)
+        # print(list_type_value)
+        # print(list_type_value_count)
 
         # 获取嵌套列表中的第一项，也就是时间总和最长的类型和秒数
         max_type = int(list_type_value[0][0])
@@ -66,7 +66,7 @@ class InitialView(LoginRequiredMixIn, View):
         string_max_type = max_turple[0]
         string_max_tag = max_turple[1]
 
-        # 遍历嵌套列表，准备统计扇形图
+        """扇形图:遍历嵌套列表"""
         list_record_type = []
         list_record_seconds = []
         for list_type_value_record in list_type_value:
@@ -74,10 +74,10 @@ class InitialView(LoginRequiredMixIn, View):
             record_seconds = int(list_type_value_record[1])
             list_record_type.append(record_type)
             list_record_seconds.append(record_seconds)
-        print(list_record_type)
-        print(list_record_seconds)
+        # print(list_record_type)
+        # print(list_record_seconds)
 
-        # 将类型数字列表转化为相应的文字列表，将秒数列表转化为分钟列表
+        # 将数字列表转化为相应的文字列表，将秒数列表转化为分钟列表
         list_type_word = []
         list_type_minute = []
         for record_type in list_record_type:
@@ -86,15 +86,59 @@ class InitialView(LoginRequiredMixIn, View):
         for record_seconds in list_record_seconds:
             record_minutes = record_seconds//60
             list_type_minute.append(record_minutes)
-        print(list_type_word)
-        print(list_type_minute)
-
+        # print(list_type_word)
+        # print(list_type_minute)
         # 按echart要求列表嵌套字典
         list_value_name = []
         for i in range(0, len(list_type_word)):
             dict_value_name = {'value': list_type_minute[i], 'name': list_type_word[i]}
             list_value_name.append(dict_value_name)
-        print(list_value_name)
+        # print(list_value_name)
+
+        """散点图:首先提取用户观看记录的星期、小时、秒数，装入列表，找出最大秒数用于调整散点大小"""
+        list_week_hour_second = []
+        list_second_for_max = []
+
+        for record in user_watchingtime:
+            week_1 = record.add_time.weekday()
+            hour_1 = record.add_time.hour
+            timesecond = record.time
+            a_1 = [week_1, hour_1, timesecond]
+            list_second_for_max.append(timesecond)
+            list_week_hour_second.append(a_1)
+        # print(list_week_hour_second)
+        # print(len(list_week_hour_second))
+        # print(list_second_for_max)
+        max_second = max(list_second_for_max)
+        max_minute = max_second // 60
+
+        # 生成散点调整大小，目前单位最长时间低于15分钟，维持suitsize=4，若超过15分钟，则换算缩放倍数
+        suitsize = 0
+        if 0 <= max_minute <= 15:
+            suitsize = 4
+        elif max_minute > 15:
+            suitsize = 15 / max_minute
+            suitsize = '%.2f' % suitsize
+            suitsize = float(suitsize)*4
+        print(suitsize)
+
+        list_week_hour_secondsum = []
+        for week_2 in range(0, 7):
+            for hour_2 in range(0, 24):
+                second_sum = 0
+                # minute_sum = 0
+                for record in list_week_hour_second:
+                    if week_2 == int(record[0]) and hour_2 == int(record[1]):
+                        second_sum += int(record[2])
+                minute_sum = second_sum // 60
+
+                a_2 = [week_2, hour_2, minute_sum]
+                list_week_hour_secondsum.append(a_2)
+                # minute_sum_sum += minute_sum
+
+        print(list_week_hour_secondsum)
+        print(len(list_week_hour_secondsum))
+        # print(minute_sum_sum)
 
         return render(request, 'recommend-initial.html', {
             'user': user,
@@ -102,9 +146,12 @@ class InitialView(LoginRequiredMixIn, View):
             'string_tag': string_tag,
             'string_max_type': string_max_type,
             'string_max_tag': string_max_tag,
-            'list_type_word': list_type_word,
-            # 'list_value_name': json.dumps(list_value_name),
-            'list_value_name': list_value_name,
+            # 'list_type_word': list_type_word,
+            # 'list_value_name': list_value_name,
+            'list_type_word': json.dumps(list_type_word),
+            'list_value_name': json.dumps(list_value_name),
+            'list_week_hour_secondsum': json.dumps(list_week_hour_secondsum),
+            'suitsize': suitsize,
         })
 
 
