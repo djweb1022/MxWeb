@@ -199,7 +199,7 @@ class VideoPlayView(View):
         return render(request, 'course-play.html', {
             'course': course,
             'lesson': lesson,
-            'all_resource': all_resource,
+            'course_resources': all_resource,
             'relate_courses': relate_courses,
             'video': video,
         })
