@@ -28,7 +28,7 @@ class CourseAdmin(object):
     list_filter = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
 
     # 默认按点击数排序
-    ordering = ['-click_nums']
+    # ordering = ['-click_nums']
 
     # 使用ueditor
     # style_fields = {'detail': 'ueditor'}

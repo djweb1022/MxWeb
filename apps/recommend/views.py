@@ -30,41 +30,47 @@ class InitialView(LoginRequiredMixIn, View):
 
         """下面统计观看时间最长的时间类型，作为该用户最喜欢的时间情境"""
         user_watchingtime = WatchingTime.objects.filter(user=request.user)
-        list_timetype = []
-        list_type_value = []
-        # 获取所有已经出现的时间类型，组成列表
-        for record in user_watchingtime:
-            list_timetype.append(record.time_type)
-        # 去除列表中的重复值
-        list_timetype = list(set(list_timetype))
-        # 列表排序
-        list_timetype = sorted(list_timetype)
-        # 分类统计观看时长，返回嵌套列表
-        list_type_value_count = 0
-        for single_type in list_timetype:
-            # print(single_type)
-            user_type_watchingtime = WatchingTime.objects.filter(user=request.user, time_type=single_type)
-            sum_time = 0
-            for record_user_type_watchingtime in user_type_watchingtime:
-                sum_time += record_user_type_watchingtime.time
-            a = [single_type, sum_time]
-            list_type_value.append(a)
-            list_type_value_count += 1
+        if user_watchingtime.exists():
+            list_timetype = []
+            list_type_value = []
+            # 获取所有已经出现的时间类型，组成列表
+            for record in user_watchingtime:
+                list_timetype.append(record.time_type)
+            # 去除列表中的重复值
+            list_timetype = list(set(list_timetype))
+            # 列表排序
+            list_timetype = sorted(list_timetype)
+            # 分类统计观看时长，返回嵌套列表
+            list_type_value_count = 0
+            for single_type in list_timetype:
+                # print(single_type)
+                user_type_watchingtime = WatchingTime.objects.filter(user=request.user, time_type=single_type)
+                sum_time = 0
+                for record_user_type_watchingtime in user_type_watchingtime:
+                    sum_time += record_user_type_watchingtime.time
+                a = [single_type, sum_time]
+                list_type_value.append(a)
+                list_type_value_count += 1
 
-        # 嵌套列表按字列表第二个值——时间总和 进行排序
-        # print(list_type_value)
-        list_type_value = sorted(list_type_value, key=operator.itemgetter(1), reverse=True)
-        # print(list_type_value)
-        # print(list_type_value_count)
+            # 嵌套列表按字列表第二个值——时间总和 进行排序
+            # print(list_type_value)
+            list_type_value = sorted(list_type_value, key=operator.itemgetter(1), reverse=True)
+            # print(list_type_value)
+            # print(list_type_value_count)
 
-        # 获取嵌套列表中的第一项，也就是时间总和最长的类型和秒数
-        max_type = int(list_type_value[0][0])
-        max_time = int(list_type_value[0][1])
+            # 获取嵌套列表中的第一项，也就是时间总和最长的类型和秒数
+            max_type = int(list_type_value[0][0])
+            max_time = int(list_type_value[0][1])
 
-        # 调用函数，获得最大时间类型对应提示语
-        max_turple = get_max_type_return(max_type)
-        string_max_type = max_turple[0]
-        string_max_tag = max_turple[1]
+            # 调用函数，获得最大时间类型对应提示语
+            max_turple = get_max_type_return(max_type)
+            string_max_type = max_turple[0]
+            string_max_tag = max_turple[1]
+        else:
+            max_turple = get_max_type_return(9)
+            string_max_type = max_turple[0]
+            string_max_tag = max_turple[1]
+            list_type_value = [['9', 0]]
 
         """扇形图:遍历嵌套列表"""
         list_record_type = []
@@ -99,46 +105,50 @@ class InitialView(LoginRequiredMixIn, View):
         list_week_hour_second = []
         list_second_for_max = []
 
-        for record in user_watchingtime:
-            week_1 = record.add_time.weekday()
-            hour_1 = record.add_time.hour
-            timesecond = record.time
-            a_1 = [week_1, hour_1, timesecond]
-            list_second_for_max.append(timesecond)
-            list_week_hour_second.append(a_1)
-        # print(list_week_hour_second)
-        # print(len(list_week_hour_second))
-        # print(list_second_for_max)
-        max_second = max(list_second_for_max)
-        max_minute = max_second // 60
+        if user_watchingtime.exists():
+            for record in user_watchingtime:
+                week_1 = record.add_time.weekday()
+                hour_1 = record.add_time.hour
+                timesecond = record.time
+                a_1 = [week_1, hour_1, timesecond]
+                list_second_for_max.append(timesecond)
+                list_week_hour_second.append(a_1)
+            # print(list_week_hour_second)
+            # print(len(list_week_hour_second))
+            # print(list_second_for_max)
+            max_second = max(list_second_for_max)
+            max_minute = max_second // 60
 
-        # 生成散点调整大小，目前单位最长时间低于15分钟，维持suitsize=4，若超过15分钟，则换算缩放倍数
-        suitsize = 0
-        if 0 <= max_minute <= 15:
+            # 生成散点调整大小，目前单位最长时间低于15分钟，维持suitsize=4，若超过15分钟，则换算缩放倍数
+            suitsize = 0
+            if 0 <= max_minute <= 15:
+                suitsize = 4
+            elif max_minute > 15:
+                suitsize = 15 / max_minute
+                suitsize = '%.2f' % suitsize
+                suitsize = float(suitsize)*4
+            print(suitsize)
+
+            list_week_hour_secondsum = []
+            for week_2 in range(0, 7):
+                for hour_2 in range(0, 24):
+                    second_sum = 0
+                    # minute_sum = 0
+                    for record in list_week_hour_second:
+                        if week_2 == int(record[0]) and hour_2 == int(record[1]):
+                            second_sum += int(record[2])
+                    minute_sum = second_sum // 60
+
+                    a_2 = [week_2, hour_2, minute_sum]
+                    list_week_hour_secondsum.append(a_2)
+                    # minute_sum_sum += minute_sum
+        else:
+            list_week_hour_secondsum = [[0, 0, 0]]
             suitsize = 4
-        elif max_minute > 15:
-            suitsize = 15 / max_minute
-            suitsize = '%.2f' % suitsize
-            suitsize = float(suitsize)*4
-        print(suitsize)
 
-        list_week_hour_secondsum = []
-        for week_2 in range(0, 7):
-            for hour_2 in range(0, 24):
-                second_sum = 0
-                # minute_sum = 0
-                for record in list_week_hour_second:
-                    if week_2 == int(record[0]) and hour_2 == int(record[1]):
-                        second_sum += int(record[2])
-                minute_sum = second_sum // 60
-
-                a_2 = [week_2, hour_2, minute_sum]
-                list_week_hour_secondsum.append(a_2)
-                # minute_sum_sum += minute_sum
-
-        print(list_week_hour_secondsum)
-        print(len(list_week_hour_secondsum))
-        # print(minute_sum_sum)
+            print(list_week_hour_secondsum)
+            print(len(list_week_hour_secondsum))
+            # print(minute_sum_sum)
 
         return render(request, 'recommend-initial.html', {
             'user': user,
@@ -358,6 +368,8 @@ def get_max_type_return(max_type_1):
         max_turple_1 = get_time_type(5, 18)
     elif max_type_1 == 8:
         max_turple_1 = get_time_type(5, 0)
+    elif max_type_1 == 9:
+        max_turple_1 = get_time_type(-1, -1)
 
     string_max_type_1 = max_turple_1[0]
     string_max_tag_1 = max_turple_1[1]
