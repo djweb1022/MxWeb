@@ -1900,6 +1900,15 @@ textarea:focus {
     position: relative;
 }
 
+.group_list .box2 {
+    height: 265px;
+    border: 1px solid #ccc;
+    width: 233px;
+    float: left;
+    overflow: hidden;
+    position: relative;
+}
+
 .group_list .box:hover {
     border-color: #4a0064;
 }
@@ -1910,6 +1919,10 @@ textarea:focus {
 }
 
 .group_list .box img {
+    height: 150px;
+}
+
+.group_list .box2 img {
     height: 140px;
 }
 
@@ -2577,7 +2590,7 @@ footer .footer .line {
     height: 50px;
     line-height: 50px;
     color: #454545;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
     overflow: hidden;
     margin: 0;
     padding: 0;
@@ -2815,6 +2828,13 @@ footer .footer .line {
 }
 
 .list .group_list .box {
+    width: 280px;
+    height: 280px;
+    margin: 3px;
+    overflow: hidden;
+}
+
+.list .group_list .box2 {
     width: 280px;
     height: 300px;
     margin: 3px;
@@ -5393,7 +5413,7 @@ footer .footer .line {
 }
 
 .companycenter .group_list .box {
-    height: 280px;
+    height: 270px;
     position: relative;
     margin-top: 30px;
     /*margin-bottom: 15px;*/
@@ -5404,7 +5424,7 @@ footer .footer .line {
 
 .companycenter .group_list .box .des {
     width: 95%;
-    margin: 2%;
+    margin: 3% 2%;
     height: 60px;
     border: 0;
     position: relative;
@@ -8635,7 +8655,7 @@ table .upload-btn {
 .comp-img-box {
     position: relative;
     display: block;
-    height: 160px;
+    height: 150px;
     line-height: normal;
     border-bottom: 1px solid #eaeaea;
     overflow: hidden;
@@ -9519,6 +9539,6 @@ table .upload-btn {
     width: 100%;
 }
 
-.des5{
-    margin-top: 5px;
+.group_list .box .box2 img{
+    height: 170px;
 }
