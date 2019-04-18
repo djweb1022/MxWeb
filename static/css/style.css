@@ -1910,7 +1910,7 @@ textarea:focus {
 }
 
 .group_list .box img {
-    height: 160px;
+    height: 140px;
 }
 
 .group_list .des {
@@ -9517,4 +9517,8 @@ table .upload-btn {
     /*padding-right: 20px;*/
     display: flex;
     width: 100%;
+}
+
+.des5{
+    margin-top: 5px;
 }
