@@ -24,10 +24,10 @@ class WatchingTime(models.Model):
     id_int_course = models.IntegerField(default=0, verbose_name=u'课程ID')
     id_int_lesson = models.IntegerField(default=0, verbose_name=u'章节ID')
     id_int_video = models.IntegerField(default=0, verbose_name=u'视频ID')
-    user = models.ForeignKey(UserProfile, verbose_name=u'用户', on_delete=models.CASCADE)
-    course = models.ForeignKey(Course, verbose_name=u'课程', on_delete=models.CASCADE)
-    lesson = models.ForeignKey(Lesson, verbose_name=u'章节', on_delete=models.CASCADE)
-    video = models.ForeignKey(Video, verbose_name=u'视频', on_delete=models.CASCADE)
+    user = models.ForeignKey(UserProfile, verbose_name=u'用户', on_delete=models.CASCADE, null=True, blank=True,)
+    course = models.ForeignKey(Course, verbose_name=u'课程', on_delete=models.CASCADE, null=True, blank=True,)
+    lesson = models.ForeignKey(Lesson, verbose_name=u'章节', on_delete=models.CASCADE, null=True, blank=True,)
+    video = models.ForeignKey(Video, verbose_name=u'视频', on_delete=models.CASCADE, null=True, blank=True,)
     time = models.IntegerField(default=0, verbose_name=u'观看时长(秒)')
 
     time_type = models.CharField(verbose_name=u'时间类别', choices=(('1', u'工作日上午'), ('2', u'工作日下午'), ('3', u'工作日晚间'),

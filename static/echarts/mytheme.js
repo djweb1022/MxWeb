@@ -22,13 +22,14 @@
     }
     echarts.registerTheme('mytheme', {
         "color": [
-            "#8646ba",
+            "#c069b7",
             "#107cd6",
             "#f94994",
             "#b021aa",
             "#198899",
-            "#24199e",
-            "#660c91"
+            "#2419b9",
+            "#8d0cb9",
+            "#ff8f65",
         ],
         "backgroundColor": "rgba(0,0,0,0)",
         "textStyle": {},
@@ -194,13 +195,14 @@
             "symbol": "emptyCircle",
             "smooth": true,
             "color": [
-                "#8646ba",
+                "#c069b7",
                 "#107cd6",
                 "#f94994",
                 "#b021aa",
                 "#198899",
-                "#24199e",
-                "#660c91"
+                "#2419b9",
+                "#8d0cb9",
+                "#ff8f65",
             ],
             "label": {
                 "normal": {

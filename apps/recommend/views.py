@@ -29,7 +29,7 @@ class InitialView(LoginRequiredMixIn, View):
         string_tag = time_turple[1]
 
         """下面统计观看时间最长的时间类型，作为该用户最喜欢的时间情境"""
-        user_watchingtime = WatchingTime.objects.filter(user=request.user)
+        user_watchingtime = WatchingTime.objects.filter(id_int_user=request.user.id)
         if user_watchingtime.exists():
             list_timetype = []
             list_type_value = []
@@ -44,7 +44,7 @@ class InitialView(LoginRequiredMixIn, View):
             list_type_value_count = 0
             for single_type in list_timetype:
                 # print(single_type)
-                user_type_watchingtime = WatchingTime.objects.filter(user=request.user, time_type=single_type)
+                user_type_watchingtime = WatchingTime.objects.filter(id_int_user=request.user.id, time_type=single_type)
                 sum_time = 0
                 for record_user_type_watchingtime in user_type_watchingtime:
                     sum_time += record_user_type_watchingtime.time
@@ -111,14 +111,40 @@ class InitialView(LoginRequiredMixIn, View):
                 hour_1 = record.add_time.hour
                 timesecond = record.time
                 a_1 = [week_1, hour_1, timesecond]
-                list_second_for_max.append(timesecond)
+                # list_second_for_max.append(timesecond)
                 list_week_hour_second.append(a_1)
             # print(list_week_hour_second)
             # print(len(list_week_hour_second))
             # print(list_second_for_max)
-            max_second = max(list_second_for_max)
-            max_minute = max_second // 60
+            # max_second = max(list_second_for_max)
+            # max_minute = max_second // 60
 
+            # 生成散点调整大小，目前单位最长时间低于15分钟，维持suitsize=4，若超过15分钟，则换算缩放倍数
+            # suitsize = 0
+            # if 0 <= max_minute <= 15:
+            #     suitsize = 3
+            # elif max_minute > 15:
+            #     suitsize = 15 / max_minute
+            #     suitsize = '%.2f' % suitsize
+            #     suitsize = float(suitsize)*3
+            # print(suitsize)
+
+            list_minute_for_max = []
+            list_week_hour_secondsum = []
+            for week_2 in range(0, 7):
+                for hour_2 in range(0, 24):
+                    second_sum = 0
+                    # minute_sum = 0
+                    for record in list_week_hour_second:
+                        if week_2 == int(record[0]) and hour_2 == int(record[1]):
+                            second_sum += int(record[2])
+                    minute_sum = second_sum // 60
+                    list_minute_for_max.append(minute_sum)
+                    a_2 = [week_2, hour_2, minute_sum]
+                    list_week_hour_secondsum.append(a_2)
+                    # minute_sum_sum += minute_sum
+
+            max_minute = max(list_minute_for_max)
             # 生成散点调整大小，目前单位最长时间低于15分钟，维持suitsize=4，若超过15分钟，则换算缩放倍数
             suitsize = 0
             if 0 <= max_minute <= 15:
@@ -129,19 +155,6 @@ class InitialView(LoginRequiredMixIn, View):
                 suitsize = float(suitsize)*4
             print(suitsize)
 
-            list_week_hour_secondsum = []
-            for week_2 in range(0, 7):
-                for hour_2 in range(0, 24):
-                    second_sum = 0
-                    # minute_sum = 0
-                    for record in list_week_hour_second:
-                        if week_2 == int(record[0]) and hour_2 == int(record[1]):
-                            second_sum += int(record[2])
-                    minute_sum = second_sum // 60
-
-                    a_2 = [week_2, hour_2, minute_sum]
-                    list_week_hour_secondsum.append(a_2)
-                    # minute_sum_sum += minute_sum
         else:
             list_week_hour_secondsum = [[0, 0, 0]]
             suitsize = 4
@@ -246,10 +259,10 @@ class AddTime(View):
             watchingtime.id_int_course = course_id
             watchingtime.id_int_lesson = lesson_id
             watchingtime.id_int_video = video_id
-            watchingtime.user = request.user
-            watchingtime.course = course
-            watchingtime.lesson = lesson
-            watchingtime.video = video
+            # watchingtime.user = request.user
+            # watchingtime.course = course
+            # watchingtime.lesson = lesson
+            # watchingtime.video = video
             watchingtime.time = timevalue
 
             # 获得目前的时间
