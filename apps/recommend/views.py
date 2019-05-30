@@ -11,6 +11,26 @@ from .models import UserRating, WatchingTime
 from courses.models import Course, Lesson, Video
 from utils.mixin_utils import LoginRequiredMixIn
 import json, math
+import numpy as np
+import pandas as pd
+import keras_metrics as km
+from keras.models import load_model
+import os
+
+
+def load_predict(pre_list):
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    # model_dic = os.path.join(BASE_DIR, 'recommend')
+    model_path = os.path.join(BASE_DIR, 'recommend', 'model.h5')
+
+    model = load_model(model_path,
+                       custom_objects={'binary_precision': km.binary_precision(),
+                                       'binary_recall': km.binary_recall(),
+                                       'binary_f1_score': km.f1_score()})
+
+    predictions = model.predict(pre_list)
+    print(predictions)
+    return predictions
 
 
 class InitialView(LoginRequiredMixIn, View):
@@ -18,10 +38,11 @@ class InitialView(LoginRequiredMixIn, View):
 
         user = request.user
 
-        # 获取现在时间，提取小时、星期
+        # 获取现在时间，提取小时、星期，判断时间类型
         get_time = get_now_time()
         hour = get_time.hour
         weekday = get_time.weekday()
+        time_type = get_time_type_num(weekday, hour)
 
         # 调用函数获得提示语
         time_turple = get_time_type(weekday, hour)
@@ -90,7 +111,7 @@ class InitialView(LoginRequiredMixIn, View):
             type_word = str(get_max_type_return(record_type)[0])
             list_type_word.append(type_word)
         for record_seconds in list_record_seconds:
-            record_minutes = record_seconds//60
+            record_minutes = record_seconds // 60
             list_type_minute.append(record_minutes)
         # print(list_type_word)
         # print(list_type_minute)
@@ -111,23 +132,7 @@ class InitialView(LoginRequiredMixIn, View):
                 hour_1 = record.add_time.hour
                 timesecond = record.time
                 a_1 = [week_1, hour_1, timesecond]
-                # list_second_for_max.append(timesecond)
                 list_week_hour_second.append(a_1)
-            # print(list_week_hour_second)
-            # print(len(list_week_hour_second))
-            # print(list_second_for_max)
-            # max_second = max(list_second_for_max)
-            # max_minute = max_second // 60
-
-            # 生成散点调整大小，目前单位最长时间低于15分钟，维持suitsize=4，若超过15分钟，则换算缩放倍数
-            # suitsize = 0
-            # if 0 <= max_minute <= 15:
-            #     suitsize = 3
-            # elif max_minute > 15:
-            #     suitsize = 15 / max_minute
-            #     suitsize = '%.2f' % suitsize
-            #     suitsize = float(suitsize)*3
-            # print(suitsize)
 
             list_minute_for_max = []
             list_week_hour_secondsum = []
@@ -152,7 +157,7 @@ class InitialView(LoginRequiredMixIn, View):
             elif max_minute > 15:
                 suitsize = 15 / max_minute
                 suitsize = '%.2f' % suitsize
-                suitsize = float(suitsize)*4
+                suitsize = float(suitsize) * 4
             print(suitsize)
 
         else:
@@ -162,6 +167,62 @@ class InitialView(LoginRequiredMixIn, View):
             print(list_week_hour_secondsum)
             print(len(list_week_hour_secondsum))
             # print(minute_sum_sum)
+
+        """遍历所有课程，用训练好的DeepCA模型预测分数"""
+        user_id_list = []
+        course_id_list = []
+        time_type_list = []
+        time_list = []
+        for course_id in range(1, 37):
+            predict_records = WatchingTime.objects.filter(id_int_user=request.user.id, id_int_course=course_id)
+            if predict_records.exists():
+                sum_second = 0
+                num_count = predict_records.count()
+                for predict_record in predict_records:
+                    sum_second += predict_record.time
+
+                # 先求用户平均观看该课程的时长，后转化为时间标签
+                avg_second = sum_second / num_count
+                sum_second_label = avg_second // 10 + 1
+
+                user_id_list.append(request.user.id)
+                course_id_list.append(course_id)
+                time_type_list.append(time_type)
+                time_list.append(sum_second_label)
+
+            else:
+                user_id_list.append(request.user.id)
+                course_id_list.append(course_id)
+                time_type_list.append(time_type)
+                time_list.append(1)
+
+        train_1 = np.array(user_id_list)
+        train_2 = np.array(course_id_list)
+        train_3 = np.array(time_type_list)
+        train_4 = np.array(time_list)
+
+        train_1_2d = train_1.reshape((train_1.shape[0], 1))
+        train_2_2d = train_2.reshape((train_2.shape[0], 1))
+        train_3_2d = train_3.reshape((train_3.shape[0], 1))
+        train_4_2d = train_4.reshape((train_4.shape[0], 1))
+
+        list_train_4 = [train_1_2d, train_2_2d, train_3_2d, train_4_2d]
+        predictions_list_2d = load_predict(list_train_4)
+        predictions_list_1d = predictions_list_2d.reshape((predictions_list_2d.shape[0], ))
+
+        courseid_predictions_dict = {
+            'course_id': train_2,
+            'predictions': predictions_list_1d,
+        }
+        courseid_predictions_index = range(len(train_2))
+
+        courseid_predictions_df = pd.DataFrame(courseid_predictions_dict, courseid_predictions_index)
+        courseid_predictions_df_descend = courseid_predictions_df.sort_values(by='predictions', ascending=False)
+
+        courseid_descend = list(courseid_predictions_df_descend['course_id'])
+        courseobj = Course.objects.filter(id__in=courseid_descend)
+        courseobj_dict = {obj.id: obj for obj in courseobj}
+        courseobj_sorted = [courseobj_dict[id] for id in courseid_descend]
 
         return render(request, 'recommend-initial.html', {
             'user': user,
@@ -180,6 +241,7 @@ class InitialView(LoginRequiredMixIn, View):
 
 class Gettime(View):
     """返回当前时间、情境"""
+
     def post(self, request):
         get_time = get_now_time()
         year = get_time.year
@@ -194,6 +256,7 @@ class Gettime(View):
             if 0 <= int(num) <= 9:
                 num = '0' + str(num)
             return num
+
         hour = zeronum(hour)
         minute = zeronum(minute)
         second = zeronum(second)
@@ -211,6 +274,7 @@ class Gettime(View):
 
 class AddRating(View):
     """用户评分"""
+
     def post(self, request):
         rating_id = request.POST.get('rating_id', 0)
         rating_value = request.POST.get('rating_value', 0)
@@ -241,6 +305,7 @@ class AddRating(View):
 
 class AddTime(View):
     """用户观看时长保存"""
+
     def post(self, request):
         """通过ajax获得前端传来的数据"""
         course_id = request.POST.get('course_id', 0)
