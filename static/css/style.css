@@ -9414,7 +9414,7 @@ table .upload-btn {
 
 .rec-main{
     width: 100%;
-    height: 1000px;
+    height: 100%;
     background: #f2edf3;
 }
 
@@ -9428,6 +9428,11 @@ table .upload-btn {
 .rec-card-size1{
     width: 493.33px;
     height: 200px;
+}
+
+.rec-card-size2{
+    width: 100%;
+    height: 100%;
 }
 
 .bg-gradient1{
@@ -9539,6 +9544,76 @@ table .upload-btn {
     width: 100%;
 }
 
+.tabel-row{
+    /*padding-left: 20px;*/
+    /*padding-right: 20px;*/
+    display: flex;
+    width: 100%;
+}
+
+
 .group_list .box .box2 img{
     height: 170px;
+}
+
+.table-responsive-0530 {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.table-0530 {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+    background-color: transparent;
+    border-collapse: collapse !important;
+}
+
+.table-0530 td {
+    vertical-align: middle;
+    font-size: 0.875rem;
+    line-height: 1;
+    padding: 0.9375rem;
+    border-bottom: 1px solid #ebedf2;
+    border-left: 0;
+    border-right: 0;
+}
+
+.card-0530{
+    padding: 2.5rem 2.5rem;
+    flex-direction: column;
+}
+
+.table-0530 td img {
+    width: 36px;
+    height: 36px;
+    border-radius: 100%;
+
+}
+
+.table-0530 thead th {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom-width: 1px;
+    font-family: "ubuntu-medium", sans-serif;
+    font-weight: initial;
+    /*vertical-align: bottom;*/
+    font-size: 0.875rem;
+    line-height: 1;
+    padding: 0.9375rem;
+    vertical-align: middle;
+    text-align: left;
+    /*border-bottom: 2px solid #ebedf2;*/
+}
+
+.title-0530{
+    color: #000;
+    margin-bottom: .75rem;
+    text-transform: capitalize;
+    font-family: "ubuntu-medium", sans-serif;
+    font-size: 1.125rem;
 }

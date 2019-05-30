@@ -59,6 +59,60 @@
                     </div>
                 </div>
             </div>
+            <div class="tabel-row">
+                <div class="rec-card-border1 rec-card-size2">
+                    <div class="rec-card card-0530">
+                        <h4 class="title-0530">Recent Tickets</h4>
+                        <div class="table-responsive-0530">
+                            <table class="table-0530">
+                              <thead>
+                                <tr>
+                                  <th>
+                                    Assignee
+                                  </th>
+                                  <th>
+                                    Subject
+                                  </th>
+                                  <th>
+                                    Status
+                                  </th>
+                                  <th>
+                                    Last Update
+                                  </th>
+                                  <th>
+                                    Tracking ID
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                              {% for course in courseobj_sorted %}
+                                <tr>
+                                  <td>
+                                    <img src="{{ MEDIA_URL }}{{ course.teacher.image }}" class="mr-2" alt="image">
+                                    {{  course.teacher.name }}
+                                  </td>
+                                  <td>
+                                    {{ course.name }}
+                                  </td>
+                                  <td>
+                                    <label class="badge badge-gradient-success">DONE</label>
+                                  </td>
+                                  <td>
+                                    Dec 5, 2017
+                                  </td>
+                                  <td>
+                                    {{ course.score }}
+                                  </td>
+                                </tr>
+                              {% endfor %}
+                              </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+            </div>
         </div>
     </div>
 {% endblock %}

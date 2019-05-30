@@ -16,18 +16,18 @@ import pandas as pd
 import keras_metrics as km
 from keras.models import load_model
 import os
+import keras
 
 
 def load_predict(pre_list):
+    # 清除session，避免重复调用出错
+    keras.backend.clear_session()
     BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    # model_dic = os.path.join(BASE_DIR, 'recommend')
     model_path = os.path.join(BASE_DIR, 'recommend', 'model.h5')
-
     model = load_model(model_path,
                        custom_objects={'binary_precision': km.binary_precision(),
                                        'binary_recall': km.binary_recall(),
                                        'binary_f1_score': km.f1_score()})
-
     predictions = model.predict(pre_list)
     print(predictions)
     return predictions
@@ -200,6 +200,7 @@ class InitialView(LoginRequiredMixIn, View):
         train_2 = np.array(course_id_list)
         train_3 = np.array(time_type_list)
         train_4 = np.array(time_list)
+        train_4 = train_4.astype('int32')
 
         train_1_2d = train_1.reshape((train_1.shape[0], 1))
         train_2_2d = train_2.reshape((train_2.shape[0], 1))
@@ -220,9 +221,14 @@ class InitialView(LoginRequiredMixIn, View):
         courseid_predictions_df_descend = courseid_predictions_df.sort_values(by='predictions', ascending=False)
 
         courseid_descend = list(courseid_predictions_df_descend['course_id'])
+        score_descend = list(courseid_predictions_df_descend['predictions'])
         courseobj = Course.objects.filter(id__in=courseid_descend)
         courseobj_dict = {obj.id: obj for obj in courseobj}
         courseobj_sorted = [courseobj_dict[id] for id in courseid_descend]
+        num_count = 0
+        for courseobj in courseobj_sorted:
+            courseobj.score = score_descend[num_count]
+            num_count += 1
 
         return render(request, 'recommend-initial.html', {
             'user': user,
@@ -236,6 +242,7 @@ class InitialView(LoginRequiredMixIn, View):
             'list_value_name': json.dumps(list_value_name),
             'list_week_hour_secondsum': json.dumps(list_week_hour_secondsum),
             'suitsize': suitsize,
+            'courseobj_sorted': courseobj_sorted,
         })
 
 
@@ -364,7 +371,6 @@ def get_now_time():
 
 def get_time_type_num(weekday_1, hour_1):
     """传入星期、小时，对当前情境类别作判断，返回编号"""
-    time_type = 9
     if 0 <= int(weekday_1) <= 4:
         if 6 <= int(hour_1) <= 11:
             time_type = 1
@@ -374,6 +380,8 @@ def get_time_type_num(weekday_1, hour_1):
             time_type = 3
         elif 0 <= int(hour_1) <= 5:
             time_type = 4
+        else:
+            time_type = 9
     elif 5 <= int(weekday_1) <= 6:
         if 6 <= int(hour_1) <= 11:
             time_type = 5
@@ -383,6 +391,8 @@ def get_time_type_num(weekday_1, hour_1):
             time_type = 7
         elif 0 <= int(hour_1) <= 5:
             time_type = 8
+        else:
+            time_type = 9
     else:
         time_type = 9
 
@@ -391,8 +401,6 @@ def get_time_type_num(weekday_1, hour_1):
 
 def get_time_type(weekday_1, hour_1):
     """传入星期、小时，对当前情境类别作判断，返回提示语"""
-    string_type_1 = ''
-    string_tag_1 = ''
     if 0 <= int(weekday_1) <= 4:
         if 6 <= int(hour_1) <= 11:
             string_type_1 = '工作日上午'
@@ -406,6 +414,9 @@ def get_time_type(weekday_1, hour_1):
         elif 0 <= int(hour_1) <= 5:
             string_type_1 = '工作日凌晨'
             string_tag_1 = '区间：周一至周五 每天0:00-5:59'
+        else:
+            string_type_1 = '无情境'
+            string_tag_1 = '无区间'
     elif 5 <= int(weekday_1) <= 6:
         if 6 <= int(hour_1) <= 11:
             string_type_1 = '周末上午'
@@ -419,6 +430,9 @@ def get_time_type(weekday_1, hour_1):
         elif 0 <= int(hour_1) <= 5:
             string_type_1 = '周末凌晨'
             string_tag_1 = '区间：周六和周日 每天0:00-5:59'
+        else:
+            string_type_1 = '无情境'
+            string_tag_1 = '无区间'
     else:
         string_type_1 = '无情境'
         string_tag_1 = '无区间'
