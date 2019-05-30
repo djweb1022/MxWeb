@@ -9591,7 +9591,9 @@ table .upload-btn {
     width: 36px;
     height: 36px;
     border-radius: 100%;
-
+    margin-right: 0.5rem !important;
+    vertical-align: middle;
+    border-style: none;
 }
 
 .table-0530 thead th {
@@ -9602,11 +9604,12 @@ table .upload-btn {
     font-family: "ubuntu-medium", sans-serif;
     font-weight: initial;
     /*vertical-align: bottom;*/
-    font-size: 0.875rem;
+    /*font-size: 0.875rem;*/
     line-height: 1;
     padding: 0.9375rem;
     vertical-align: middle;
     text-align: left;
+    font-size: 14px;
     /*border-bottom: 2px solid #ebedf2;*/
 }
 
@@ -9617,3 +9620,4 @@ table .upload-btn {
     font-family: "ubuntu-medium", sans-serif;
     font-size: 1.125rem;
 }
+

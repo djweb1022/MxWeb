@@ -62,31 +62,37 @@
             <div class="tabel-row">
                 <div class="rec-card-border1 rec-card-size2">
                     <div class="rec-card card-0530">
-                        <h4 class="title-0530">Recent Tickets</h4>
+                        <h4 class="title-0530">情境感知推荐结果</h4>
                         <div class="table-responsive-0530">
                             <table class="table-0530">
                               <thead>
                                 <tr>
                                   <th>
-                                    Assignee
+                                    排名
                                   </th>
                                   <th>
-                                    Subject
+                                    讲师
                                   </th>
                                   <th>
-                                    Status
+                                    课程
                                   </th>
                                   <th>
-                                    Last Update
+                                    类别
                                   </th>
                                   <th>
-                                    Tracking ID
+                                    平均观看时长(秒)
+                                  </th>
+                                  <th>
+                                    DeepCA预测得分
                                   </th>
                                 </tr>
                               </thead>
                               <tbody>
                               {% for course in courseobj_sorted %}
                                 <tr>
+                                    <td>
+                                    &nbsp;&nbsp;{{ forloop.counter }}
+                                  </td>
                                   <td>
                                     <img src="{{ MEDIA_URL }}{{ course.teacher.image }}" class="mr-2" alt="image">
                                     {{  course.teacher.name }}
@@ -95,10 +101,10 @@
                                     {{ course.name }}
                                   </td>
                                   <td>
-                                    <label class="badge badge-gradient-success">DONE</label>
+                                    {{ course.get_category_display }}
                                   </td>
                                   <td>
-                                    Dec 5, 2017
+                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ course.time }}
                                   </td>
                                   <td>
                                     {{ course.score }}

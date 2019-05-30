@@ -41,7 +41,7 @@ class InitialView(LoginRequiredMixIn, View):
         # 获取现在时间，提取小时、星期，判断时间类型
         get_time = get_now_time()
         hour = get_time.hour
-        weekday = get_time.weekday()
+        weekday = get_time.weekday()+2
         time_type = get_time_type_num(weekday, hour)
 
         # 调用函数获得提示语
@@ -173,6 +173,7 @@ class InitialView(LoginRequiredMixIn, View):
         course_id_list = []
         time_type_list = []
         time_list = []
+        time_second_list = []
         for course_id in range(1, 37):
             predict_records = WatchingTime.objects.filter(id_int_user=request.user.id, id_int_course=course_id)
             if predict_records.exists():
@@ -182,14 +183,15 @@ class InitialView(LoginRequiredMixIn, View):
                     sum_second += predict_record.time
 
                 # 先求用户平均观看该课程的时长，后转化为时间标签
-                avg_second = sum_second / num_count
-                sum_second_label = avg_second // 10 + 1
+                avg_second = int(sum_second / num_count)
+                sum_second_label = int(avg_second // 10 + 1)
+                # avg_minute = int(avg_second // 60)
 
                 user_id_list.append(request.user.id)
                 course_id_list.append(course_id)
                 time_type_list.append(time_type)
                 time_list.append(sum_second_label)
-
+                time_second_list.append(avg_second)
             else:
                 user_id_list.append(request.user.id)
                 course_id_list.append(course_id)
@@ -200,7 +202,6 @@ class InitialView(LoginRequiredMixIn, View):
         train_2 = np.array(course_id_list)
         train_3 = np.array(time_type_list)
         train_4 = np.array(time_list)
-        train_4 = train_4.astype('int32')
 
         train_1_2d = train_1.reshape((train_1.shape[0], 1))
         train_2_2d = train_2.reshape((train_2.shape[0], 1))
@@ -214,6 +215,7 @@ class InitialView(LoginRequiredMixIn, View):
         courseid_predictions_dict = {
             'course_id': train_2,
             'predictions': predictions_list_1d,
+            'time': time_second_list,
         }
         courseid_predictions_index = range(len(train_2))
 
@@ -222,12 +224,14 @@ class InitialView(LoginRequiredMixIn, View):
 
         courseid_descend = list(courseid_predictions_df_descend['course_id'])
         score_descend = list(courseid_predictions_df_descend['predictions'])
+        time_descend = list(courseid_predictions_df_descend['time'])
         courseobj = Course.objects.filter(id__in=courseid_descend)
         courseobj_dict = {obj.id: obj for obj in courseobj}
         courseobj_sorted = [courseobj_dict[id] for id in courseid_descend]
         num_count = 0
         for courseobj in courseobj_sorted:
             courseobj.score = score_descend[num_count]
+            courseobj.time = time_descend[num_count]
             num_count += 1
 
         return render(request, 'recommend-initial.html', {
